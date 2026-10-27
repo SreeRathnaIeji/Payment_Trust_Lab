@@ -1,0 +1,75 @@
+{
+  "experiment": "temporal-transaction-gnn-v1",
+  "framework": "TensorFlow/Keras",
+  "tensorflow_version": "2.21.0",
+  "compute_device": "CPU",
+  "dataset": "Synthetic PaySim",
+  "split_directory": "Dataset (PaySim)/chronological_splits",
+  "split_step_ranges": {
+    "train": [
+      1,
+      450
+    ],
+    "validation": [
+      451,
+      600
+    ],
+    "test": [
+      601,
+      743
+    ]
+  },
+  "numeric_features": [
+    "step",
+    "amount",
+    "oldbalanceOrg",
+    "newbalanceOrig",
+    "oldbalanceDest",
+    "newbalanceDest"
+  ],
+  "categorical_features": [
+    "type"
+  ],
+  "target_column": "isFraud",
+  "excluded_model_inputs": [
+    "isFraud",
+    "isFlaggedFraud",
+    "nameOrig",
+    "nameDest"
+  ],
+  "graph_node_definition": "one transaction event per node",
+  "graph_edge_definition": "directed from prior transaction to current when endpoint accounts match",
+  "edge_relations": [
+    "prior_sender_to_current_sender",
+    "prior_recipient_to_current_sender",
+    "prior_sender_to_current_recipient",
+    "prior_recipient_to_current_recipient"
+  ],
+  "edge_features": [
+    "prior_sender_to_current_sender",
+    "prior_recipient_to_current_sender",
+    "prior_sender_to_current_recipient",
+    "prior_recipient_to_current_recipient",
+    "normalized_log_step_gap"
+  ],
+  "incoming_edges_per_query_max": 4,
+  "same_step_edges": "excluded; all queries at a step are built before step history updates",
+  "context_sampling_fraction": 0.1,
+  "training_target_sampling_fraction": 0.1,
+  "preprocessing_fit_scope": "deterministic sampled training rows only",
+  "label_leakage_policy": "labels are targets only and never enter graph nodes, edges, or model inputs",
+  "random_seed": 42,
+  "hidden_dim": 32,
+  "batch_size": 2048,
+  "maximum_epochs": 20,
+  "best_epoch": 1,
+  "early_stopping": "validation loss, patience 3, restore best weights",
+  "loss": "binary cross entropy with inverse-frequency training class weights",
+  "optimizer": "Adam, learning_rate=0.001",
+  "preprocessing_training_rows": 601472,
+  "training_target_rows": 601472,
+  "training_fraud_rows": 495,
+  "validation_rows": 244330,
+  "test_rows": 103573,
+  "validation_selected_threshold": 0.9129394292831421
+}

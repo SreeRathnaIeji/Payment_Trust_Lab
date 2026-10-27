@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      PAYSIM_DB_PATH: /app/backend/data/demo.sqlite3
+    volumes:
+      - payment_trust_data:/app/backend/data
+    restart: unless-stopped
+volumes:
+  payment_trust_data:

@@ -1,0 +1,73 @@
+{
+  "experiment": "temporal-transaction-gnn-v2",
+  "framework": "TensorFlow/Keras",
+  "tensorflow_version": "2.21.0",
+  "compute_device": "CPU",
+  "split_directory": "Dataset (PaySim)/chronological_splits",
+  "split_step_ranges": {
+    "train": [
+      1,
+      450
+    ],
+    "validation": [
+      451,
+      600
+    ],
+    "test": [
+      601,
+      743
+    ]
+  },
+  "numeric_features": [
+    "step",
+    "amount",
+    "oldbalanceOrg",
+    "newbalanceOrig",
+    "oldbalanceDest",
+    "newbalanceDest"
+  ],
+  "categorical_features": [
+    "type"
+  ],
+  "target_column": "isFraud",
+  "excluded_model_inputs": [
+    "isFraud",
+    "isFlaggedFraud",
+    "nameOrig",
+    "nameDest"
+  ],
+  "edge_relations": [
+    "prior_sender_to_current_sender",
+    "prior_recipient_to_current_sender",
+    "prior_sender_to_current_recipient",
+    "prior_recipient_to_current_recipient"
+  ],
+  "edge_features": [
+    "prior_sender_to_current_sender",
+    "prior_recipient_to_current_sender",
+    "prior_sender_to_current_recipient",
+    "prior_recipient_to_current_recipient",
+    "normalized_log_step_gap"
+  ],
+  "neighbors_per_relation": 4,
+  "maximum_edges_per_transaction": 16,
+  "target_sample_fraction": 0.1,
+  "context_sample_fraction": 0.25,
+  "preprocessing_fit_scope": "deterministic sampled training rows only",
+  "label_policy": "fraud labels are targets only, never node/edge/model inputs",
+  "same_step_and_future_edges": "excluded; build step examples before updating its graph history",
+  "random_seed": 42,
+  "hidden_dim": 32,
+  "batch_size": 2048,
+  "maximum_epochs": 20,
+  "early_stopping_monitor": "validation_average_precision (exact sklearn average_precision_score)",
+  "early_stopping_patience": 3,
+  "optimizer": "Adam(learning_rate=0.001)",
+  "loss": "binary cross-entropy with train-derived inverse-frequency sample weights",
+  "preprocessing_training_rows": 601472,
+  "training_target_rows": 601472,
+  "training_fraud_rows": 493,
+  "validation_rows": 244330,
+  "test_rows": 103573,
+  "test_fraud_rows": 1600
+}

@@ -1,0 +1,56 @@
+{
+  "validation_metrics": {
+    "threshold": 0.9129394292831421,
+    "precision": 0.30492753623188407,
+    "recall": 0.3380462724935733,
+    "f1": 0.3206339530630905,
+    "average_precision": 0.2645858599936665,
+    "confusion_matrix": [
+      [
+        241575,
+        1199
+      ],
+      [
+        1030,
+        526
+      ]
+    ]
+  },
+  "gnn_test_metrics": {
+    "threshold": 0.9129394292831421,
+    "precision": 0.5146520146520146,
+    "recall": 0.35125,
+    "f1": 0.4175334323922734,
+    "average_precision": 0.3686151366615332,
+    "confusion_matrix": [
+      [
+        101443,
+        530
+      ],
+      [
+        1038,
+        562
+      ]
+    ]
+  },
+  "existing_xgboost_test_metrics": {
+    "model": "Existing chronological XGBoost baseline",
+    "threshold": 0.9500000000000001,
+    "precision": 0.9749430523917996,
+    "recall": 0.8025,
+    "f1": 0.8803565306822078,
+    "average_precision": 0.963919506633059,
+    "confusion_matrix": [
+      [
+        101940,
+        33
+      ],
+      [
+        316,
+        1284
+      ]
+    ]
+  },
+  "test_fraud_rows": 1600,
+  "validation_fraud_rows": 1556
+}

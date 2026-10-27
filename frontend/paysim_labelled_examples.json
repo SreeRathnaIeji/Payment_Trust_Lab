@@ -1,0 +1,112 @@
+{
+    "dataset_name": "PaySim chronological test examples",
+    "source": "Dataset (PaySim)/chronological_splits/test.csv",
+    "scope": "Eight genuine synthetic PaySim test transactions selected deterministically, four with isFraud=1 and four with isFraud=0. Feature values and labels are copied from the held-out split.",
+    "warning": "These are individual examples, not an accuracy estimate. PaySim is synthetic. The label is demonstration metadata and must never be sent as a model input.",
+    "examples": [
+        {
+            "id": "paysim-test-0014621",
+            "ground_truth": 0,
+            "transaction": {
+                "step": 637,
+                "type": "CASH_OUT",
+                "amount": 272660.61,
+                "oldbalanceOrg": 738.0,
+                "newbalanceOrig": 0.0,
+                "oldbalanceDest": 544825.62,
+                "newbalanceDest": 817486.23
+            }
+        },
+        {
+            "id": "paysim-test-0017578",
+            "ground_truth": 1,
+            "transaction": {
+                "step": 639,
+                "type": "CASH_OUT",
+                "amount": 305846.12,
+                "oldbalanceOrg": 305846.12,
+                "newbalanceOrig": 0.0,
+                "oldbalanceDest": 0.0,
+                "newbalanceDest": 305846.12
+            }
+        },
+        {
+            "id": "paysim-test-0028055",
+            "ground_truth": 0,
+            "transaction": {
+                "step": 661,
+                "type": "PAYMENT",
+                "amount": 4716.21,
+                "oldbalanceOrg": 40364.0,
+                "newbalanceOrig": 35647.79,
+                "oldbalanceDest": 0.0,
+                "newbalanceDest": 0.0
+            }
+        },
+        {
+            "id": "paysim-test-0033940",
+            "ground_truth": 1,
+            "transaction": {
+                "step": 667,
+                "type": "TRANSFER",
+                "amount": 71554.74,
+                "oldbalanceOrg": 71554.74,
+                "newbalanceOrig": 0.0,
+                "oldbalanceDest": 0.0,
+                "newbalanceDest": 0.0
+            }
+        },
+        {
+            "id": "paysim-test-0058860",
+            "ground_truth": 0,
+            "transaction": {
+                "step": 687,
+                "type": "PAYMENT",
+                "amount": 1396.0,
+                "oldbalanceOrg": 8201.0,
+                "newbalanceOrig": 6805.0,
+                "oldbalanceDest": 0.0,
+                "newbalanceDest": 0.0
+            }
+        },
+        {
+            "id": "paysim-test-0089492",
+            "ground_truth": 1,
+            "transaction": {
+                "step": 695,
+                "type": "TRANSFER",
+                "amount": 7435751.59,
+                "oldbalanceOrg": 7435751.59,
+                "newbalanceOrig": 0.0,
+                "oldbalanceDest": 0.0,
+                "newbalanceDest": 0.0
+            }
+        },
+        {
+            "id": "paysim-test-0094831",
+            "ground_truth": 0,
+            "transaction": {
+                "step": 707,
+                "type": "CASH_OUT",
+                "amount": 188100.96,
+                "oldbalanceOrg": 20039.0,
+                "newbalanceOrig": 0.0,
+                "oldbalanceDest": 551209.4,
+                "newbalanceDest": 739310.36
+            }
+        },
+        {
+            "id": "paysim-test-0103520",
+            "ground_truth": 1,
+            "transaction": {
+                "step": 739,
+                "type": "CASH_OUT",
+                "amount": 8116.53,
+                "oldbalanceOrg": 8116.53,
+                "newbalanceOrig": 0.0,
+                "oldbalanceDest": 7638.26,
+                "newbalanceDest": 15754.79
+            }
+        }
+    ]
+}

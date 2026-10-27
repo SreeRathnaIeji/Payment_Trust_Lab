@@ -1,0 +1,55 @@
+{
+  "experiment": "temporal-graph-xgboost-v1",
+  "model_type": "XGBoost with past-only temporal graph degree features; not a GNN",
+  "graph_features": [
+    "log_source_prior_out_degree",
+    "log_source_prior_in_degree",
+    "log_target_prior_in_degree",
+    "log_target_prior_out_degree"
+  ],
+  "graph_count_estimator": {
+    "method": "Count-Min Sketch",
+    "width_per_row": 4194304,
+    "depth": 3,
+    "note": "Fixed-memory approximate degree counts may overestimate due to hash collisions."
+  },
+  "label_used_as_input": false,
+  "within_step_future_edges_excluded": true,
+  "training_sample_fraction": 0.1,
+  "validation_selected_threshold": 0.88,
+  "validation_metrics": {
+    "threshold": 0.88,
+    "precision": 0.9667697063369397,
+    "recall": 0.8039845758354756,
+    "f1": 0.8778947368421053,
+    "average_precision": 0.9385800565180907,
+    "TN": 242731,
+    "FP": 43,
+    "FN": 305,
+    "TP": 1251
+  },
+  "test_metrics": {
+    "threshold": 0.88,
+    "precision": 0.9776407093292213,
+    "recall": 0.7925,
+    "f1": 0.8753883327580255,
+    "average_precision": 0.9605201814470576,
+    "TN": 101944,
+    "FP": 29,
+    "FN": 332,
+    "TP": 1268
+  },
+  "existing_main_xgboost_test_metrics": {
+    "threshold": 0.9500000000000001,
+    "precision": 0.9749430523917996,
+    "recall": 0.8025,
+    "f1": 0.8803565306822078,
+    "average_precision": 0.963919506633059,
+    "TN": 101940,
+    "FP": 33,
+    "FN": 316,
+    "TP": 1284
+  },
+  "comparison_period": "Dataset (PaySim)/chronological_splits/test.csv",
+  "model_file": "Experiments\\artifacts\\temporal_graph_xgboost\\temporal_graph_xgboost.joblib"
+}

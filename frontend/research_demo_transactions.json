@@ -1,0 +1,49 @@
+{
+  "dataset_name": "Payment Trust Lab fictional research demo",
+  "scope": "Fictional account identifiers and illustrative PaySim-shaped inputs only. These records have no fraud labels and are not claims about real transactions.",
+  "accounts": [
+    { "id": "DEMO-ACCT-01", "name": "Aster household", "x": 105, "y": 108 },
+    { "id": "DEMO-ACCT-02", "name": "Birch market", "x": 320, "y": 68 },
+    { "id": "DEMO-ACCT-03", "name": "Cedar services", "x": 520, "y": 145 },
+    { "id": "DEMO-ACCT-04", "name": "Dune supplier", "x": 390, "y": 295 },
+    { "id": "DEMO-ACCT-05", "name": "Elm cooperative", "x": 125, "y": 285 }
+  ],
+  "scenarios": [
+    {
+      "id": "aster-birch-transfer-1",
+      "title": "Aster → Birch · transfer 1",
+      "description": "A fictional transfer input used to demonstrate the saved transaction model.",
+      "transaction": { "type": "TRANSFER", "step": 500, "amount": 12500, "oldbalanceOrg": 18400, "newbalanceOrig": 5900, "oldbalanceDest": 2400, "newbalanceDest": 14900, "nameOrig": "DEMO-ACCT-01", "nameDest": "DEMO-ACCT-02" }
+    },
+    {
+      "id": "aster-birch-transfer-2",
+      "title": "Aster → Birch · transfer 2",
+      "description": "A second fictional directed edge between the same demo accounts.",
+      "transaction": { "type": "TRANSFER", "step": 501, "amount": 2100, "oldbalanceOrg": 5900, "newbalanceOrig": 3800, "oldbalanceDest": 14900, "newbalanceDest": 17000, "nameOrig": "DEMO-ACCT-01", "nameDest": "DEMO-ACCT-02" }
+    },
+    {
+      "id": "aster-cedar-cashout",
+      "title": "Aster → Cedar · cash out",
+      "description": "A separate fictional CASH_OUT input; the description is not a ground-truth label.",
+      "transaction": { "type": "CASH_OUT", "step": 502, "amount": 3200, "oldbalanceOrg": 3800, "newbalanceOrig": 600, "oldbalanceDest": 7500, "newbalanceDest": 10700, "nameOrig": "DEMO-ACCT-01", "nameDest": "DEMO-ACCT-03" }
+    },
+    {
+      "id": "cedar-dune-payment",
+      "title": "Cedar → Dune · payment",
+      "description": "A fictional payment input with modest balances and amount.",
+      "transaction": { "type": "PAYMENT", "step": 502, "amount": 86.5, "oldbalanceOrg": 1100, "newbalanceOrig": 1013.5, "oldbalanceDest": 250, "newbalanceDest": 336.5, "nameOrig": "DEMO-ACCT-03", "nameDest": "DEMO-ACCT-04" }
+    },
+    {
+      "id": "dune-birch-transfer",
+      "title": "Dune → Birch · transfer",
+      "description": "A fictional transfer connecting the supplier and market demo accounts.",
+      "transaction": { "type": "TRANSFER", "step": 503, "amount": 6400, "oldbalanceOrg": 9000, "newbalanceOrig": 2600, "oldbalanceDest": 17000, "newbalanceDest": 23400, "nameOrig": "DEMO-ACCT-04", "nameDest": "DEMO-ACCT-02" }
+    },
+    {
+      "id": "elm-aster-cashin",
+      "title": "Elm → Aster · cash in",
+      "description": "A fictional CASH_IN input included to show another transaction type.",
+      "transaction": { "type": "CASH_IN", "step": 504, "amount": 5400, "oldbalanceOrg": 6300, "newbalanceOrig": 11700, "oldbalanceDest": 600, "newbalanceDest": 6000, "nameOrig": "DEMO-ACCT-05", "nameDest": "DEMO-ACCT-01" }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "dataset": "PaySim synthetic transaction simulator",
+  "split_directory": "Dataset (PaySim)\\chronological_splits",
+  "split_step_ranges": {
+    "train": [
+      1,
+      450
+    ],
+    "validation": [
+      451,
+      600
+    ],
+    "test": [
+      601,
+      743
+    ]
+  },
+  "numeric_features": [
+    "step",
+    "amount",
+    "oldbalanceOrg",
+    "newbalanceOrig",
+    "oldbalanceDest",
+    "newbalanceDest"
+  ],
+  "categorical_features": [
+    "type"
+  ],
+  "target_column": "isFraud",
+  "excluded_inputs": [
+    "isFraud",
+    "isFlaggedFraud",
+    "nameOrig",
+    "nameDest"
+  ],
+  "training_sample_fraction": 0.1,
+  "training_sample_rows": 601472,
+  "training_sample_fraud_rows": 495,
+  "validation_selected_thresholds": {
+    "Random Forest": 0.31621871622160674,
+    "XGBoost": 0.932887852191925,
+    "Logistic Regression": 0.9319974173158869,
+    "Isolation Forest": 0.6262640447262892
+  },
+  "threshold_selection": "maximize validation F1, then precision, then threshold",
+  "preprocessing_fit_scope": "sampled training rows only",
+  "resampling": "none; imbalance handled with model class weights / positive weight",
+  "isolation_forest_fit_scope": "non-fraud sampled training rows only",
+  "ensemble_rule": "fraud with at least 3 of 4 binary fraud votes; 2-2 tie resolves as legitimate",
+  "random_seed": 42,
+  "chunk_size": 100000,
+  "estimators": 300
+}

@@ -1,0 +1,75 @@
+{
+    "dataset_name": "PaySim chronological test-split network sample",
+    "source": "Dataset (PaySim)/chronological_splits/test.csv",
+    "step_range": [
+        601,
+        743
+    ],
+    "sample_note": "Three genuine synthetic PaySim test-split transactions selected because they share recipient C613935961. This is a small selected sample, not the recipient's complete history or a real person's payment network.",
+    "accounts": [
+        {
+            "id": "C2127461691",
+            "x": 92,
+            "y": 76
+        },
+        {
+            "id": "C270134345",
+            "x": 92,
+            "y": 192
+        },
+        {
+            "id": "C400680114",
+            "x": 92,
+            "y": 308
+        },
+        {
+            "id": "C613935961",
+            "x": 370,
+            "y": 192
+        }
+    ],
+    "transactions": [
+        {
+            "id": "paysim-test-row-62175",
+            "split_row_index": 62175,
+            "step": 688,
+            "type": "CASH_OUT",
+            "amount": 420143.28,
+            "oldbalanceOrg": 71556.0,
+            "newbalanceOrig": 0.0,
+            "oldbalanceDest": 229209.76,
+            "newbalanceDest": 649353.04,
+            "nameOrig": "C2127461691",
+            "nameDest": "C613935961",
+            "isFraud": 0
+        },
+        {
+            "id": "paysim-test-row-87820",
+            "split_row_index": 87820,
+            "step": 694,
+            "type": "CASH_OUT",
+            "amount": 307147.25,
+            "oldbalanceOrg": 0.0,
+            "newbalanceOrig": 0.0,
+            "oldbalanceDest": 649353.04,
+            "newbalanceDest": 956500.29,
+            "nameOrig": "C270134345",
+            "nameDest": "C613935961",
+            "isFraud": 0
+        },
+        {
+            "id": "paysim-test-row-101634",
+            "split_row_index": 101634,
+            "step": 716,
+            "type": "CASH_OUT",
+            "amount": 1897921.7,
+            "oldbalanceOrg": 1897921.7,
+            "newbalanceOrig": 0.0,
+            "oldbalanceDest": 956500.29,
+            "newbalanceDest": 2854421.99,
+            "nameOrig": "C400680114",
+            "nameDest": "C613935961",
+            "isFraud": 1
+        }
+    ]
+}

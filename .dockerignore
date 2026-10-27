@@ -1,0 +1,12 @@
+.git
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+backend/data/*
+tests
+docs
+*.zip
+*.csv
+*.parquet
+*.sqlite3

@@ -1,0 +1,22 @@
+{
+    "numeric_features": [
+        "step",
+        "amount",
+        "oldbalanceOrg",
+        "newbalanceOrig",
+        "oldbalanceDest",
+        "newbalanceDest"
+    ],
+    "categorical_features": [
+        "type"
+    ],
+    "target_column": "isFraud",
+    "known_transaction_types": [
+        "CASH_IN",
+        "CASH_OUT",
+        "DEBIT",
+        "PAYMENT",
+        "TRANSFER"
+    ],
+    "chunk_size": 100000
+}

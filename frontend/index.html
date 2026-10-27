@@ -1,0 +1,3049 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>PaySim | Payment Trust Lab</title>
+  <style>
+    :root {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #17233b;
+      background: #f5f7fb;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh
+    }
+
+    button,
+    input {
+      font: inherit
+    }
+
+    .shell {
+      max-width: 1220px;
+      margin: auto;
+      padding: 24px 28px 42px
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 24px
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: none
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      background: #245eea;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 19px;
+      box-shadow: 0 8px 18px #245eea35
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 15px
+    }
+
+    .brand small {
+      display: block;
+      color: #74809a;
+      margin-top: 3px;
+      font-size: 11px
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #56637c;
+      background: #fff;
+      border: 1px solid #e6eaf2;
+      border-radius: 99px;
+      padding: 9px 12px;
+      font-size: 11px
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #aab3c3
+    }
+
+    .dot.online {
+      background: #21a675;
+      box-shadow: 0 0 0 4px #21a67518
+    }
+
+    .dot.offline {
+      background: #db5560
+    }
+
+    .identity {
+      color: #53617a;
+      font-size: 12px
+    }
+
+    .nav {
+      display: flex;
+      gap: 5px;
+      overflow: auto;
+      padding: 5px;
+      background: #e9edf5;
+      border-radius: 13px;
+      margin-bottom: 28px
+    }
+
+    .nav button {
+      white-space: nowrap;
+      border: 0;
+      background: transparent;
+      color: #617089;
+      padding: 10px 13px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 650;
+      cursor: pointer
+    }
+
+    .nav button.active {
+      background: white;
+      color: #245eea;
+      box-shadow: 0 2px 8px #1f31500d
+    }
+
+    .view[hidden] {
+      display: none
+    }
+
+    .intro {
+      margin: 0 0 23px
+    }
+
+    .eyebrow {
+      color: #245eea;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: 10px;
+      font-weight: 750
+    }
+
+    .intro h1 {
+      font-size: clamp(27px, 4vw, 38px);
+      letter-spacing: -.04em;
+      margin: 8px 0
+    }
+
+    .intro p {
+      color: #6d7890;
+      margin: 0;
+      max-width: 740px;
+      line-height: 1.6;
+      font-size: 13px
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(300px, .9fr);
+      gap: 18px;
+      align-items: start
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e8ecf3;
+      border-radius: 17px;
+      box-shadow: 0 12px 38px #1f315009
+    }
+
+    .card-pad {
+      padding: 23px
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 19px
+    }
+
+    .card h2 {
+      font-size: 16px;
+      margin: 0;
+      letter-spacing: -.02em
+    }
+
+    .card-head p,
+    .subtle {
+      font-size: 11px;
+      color: #828da2;
+      margin: 5px 0 0;
+      line-height: 1.5
+    }
+
+    .tag {
+      font-size: 10px;
+      color: #51617d;
+      background: #f3f5f9;
+      padding: 7px 9px;
+      border-radius: 8px;
+      white-space: nowrap
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    .field label {
+      display: flex;
+      justify-content: space-between;
+      color: #4e5c74;
+      font-size: 11px;
+      font-weight: 650;
+      margin-bottom: 6px
+    }
+
+    .field label span {
+      color: #97a1b2;
+      font-weight: 450
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #dfe5ef;
+      border-radius: 9px;
+      padding: 9px 11px;
+      background: #fff;
+      color: #192640;
+      font-size: 12px;
+      outline: none;
+      transition: .15s
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #5582ef;
+      box-shadow: 0 0 0 3px #245eea18
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 84px
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #aab3c1
+    }
+
+    .full {
+      grid-column: 1/-1
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-top: 18px
+    }
+
+    .primary,
+    .secondary,
+    .quiet {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 15px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .15s
+    }
+
+    .primary {
+      background: #245eea;
+      color: white;
+      box-shadow: 0 6px 14px #245eea30
+    }
+
+    .primary:hover {
+      background: #174ed4;
+      transform: translateY(-1px)
+    }
+
+    .primary:disabled {
+      opacity: .65;
+      cursor: wait;
+      transform: none
+    }
+
+    .secondary {
+      background: #f2f5fb;
+      color: #40516f;
+      border: 1px solid #e3e9f3
+    }
+
+    .quiet {
+      background: transparent;
+      color: #63718b;
+      padding: 8px 10px
+    }
+
+    .hint {
+      color: #8a94a8;
+      font-size: 10px;
+      line-height: 1.5
+    }
+
+    .result-card {
+      padding: 22px;
+      min-height: 320px
+    }
+
+    .result-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px
+    }
+
+    .shield {
+      height: 32px;
+      width: 32px;
+      border-radius: 10px;
+      background: #edf3ff;
+      color: #245eea;
+      display: grid;
+      place-items: center;
+      font-weight: 800
+    }
+
+    .placeholder {
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #7d899e;
+      padding: 16px
+    }
+
+    .placeholder strong {
+      color: #4c5b75;
+      font-size: 12px
+    }
+
+    .placeholder p {
+      font-size: 11px;
+      line-height: 1.55;
+      max-width: 260px;
+      margin: 7px 0
+    }
+
+    .empty-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid #e8edf5;
+      background: #f8faff;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      color: #7f91b5;
+      font-size: 21px;
+      margin-bottom: 12px
+    }
+
+    .score-label {
+      color: #8490a4;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 700
+    }
+
+    .score {
+      font-size: 42px;
+      letter-spacing: -.055em;
+      font-weight: 760;
+      margin: 6px 0;
+      overflow-wrap: anywhere
+    }
+
+    .decision {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      margin: 5px 0 17px
+    }
+
+    .decision.fraud {
+      background: #fff0ef;
+      color: #bd3c38
+    }
+
+    .decision.safe {
+      background: #eaf8f1;
+      color: #168256
+    }
+
+    .meter {
+      height: 7px;
+      background: #edf0f6;
+      border-radius: 99px;
+      overflow: hidden
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      background: #245eea;
+      border-radius: 99px
+    }
+
+    .meter span.high {
+      background: #df514b
+    }
+
+    .meter-legend {
+      display: flex;
+      justify-content: space-between;
+      color: #97a1b2;
+      font-size: 9px;
+      margin-top: 6px
+    }
+
+    .threshold {
+      margin-top: 16px;
+      padding: 11px;
+      background: #f7f9fc;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      color: #6e7b92;
+      font-size: 11px
+    }
+
+    .threshold strong {
+      color: #293852
+    }
+
+    .explanation {
+      color: #65728a;
+      font-size: 10px;
+      line-height: 1.55;
+      margin: 10px 0 0
+    }
+
+    .warning {
+      color: #8a5d32
+    }
+
+    .error {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 11px;
+      border-radius: 9px;
+      background: #fff1f0;
+      color: #b83f39;
+      font-size: 11px;
+      line-height: 1.45
+    }
+
+    .error.show {
+      display: block
+    }
+
+    .prototype {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      border: 1px solid #e7ebf3;
+      background: #fafbfe;
+      border-radius: 12px;
+      padding: 13px 15px;
+      color: #6e7a90;
+      font-size: 10px;
+      line-height: 1.55;
+      margin-top: 18px
+    }
+
+    .prototype b {
+      color: #4b5870
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px
+    }
+
+    .metric {
+      background: #f8f9fc;
+      border: 1px solid #edf0f5;
+      border-radius: 11px;
+      padding: 13px;
+      min-width: 0
+    }
+
+    .metric span {
+      display: block;
+      color: #78859b;
+      font-size: 10px
+    }
+
+    .metric strong {
+      display: block;
+      color: #24334d;
+      font-size: 20px;
+      letter-spacing: -.03em;
+      margin-top: 5px
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px
+    }
+
+    .mini-card {
+      padding: 16px
+    }
+
+    .mini-card h3 {
+      font-size: 12px;
+      margin: 0 0 7px
+    }
+
+    .mini-card p {
+      font-size: 10px;
+      line-height: 1.55;
+      color: #78859b;
+      margin: 0
+    }
+
+    .risk-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+      display: grid;
+      gap: 8px
+    }
+
+    .risk-list li {
+      padding: 10px 11px;
+      background: #f8f9fc;
+      border-radius: 9px;
+      color: #56647d;
+      font-size: 11px;
+      line-height: 1.45
+    }
+
+    .risk-list li.high {
+      background: #fff1f0;
+      color: #a33b36
+    }
+
+    .risk-list li.review {
+      background: #fff8e9;
+      color: #866222
+    }
+
+    .risk-list li.clear {
+      background: #f3f7f4;
+      color: #52695c
+    }
+
+    .table-wrap {
+      overflow: auto
+    }
+
+    .history-table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 600px;
+      font-size: 11px
+    }
+
+    .history-table th {
+      text-align: left;
+      color: #8190a5;
+      font-weight: 650;
+      padding: 10px;
+      border-bottom: 1px solid #edf0f5
+    }
+
+    .history-table td {
+      padding: 11px 10px;
+      color: #526079;
+      border-bottom: 1px solid #f0f2f6;
+      vertical-align: top
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 7px;
+      border-radius: 99px;
+      background: #f1f4f8;
+      color: #5a6880;
+      font-size: 10px
+    }
+
+    .auth-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .section-title {
+      margin: 0 0 13px;
+      font-size: 14px
+    }
+
+    .threshold-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #68768d;
+      font-size: 11px;
+      padding: 12px;
+      background: #f7f9fc;
+      border-radius: 10px;
+      margin-top: 12px
+    }
+
+    .threshold-line b {
+      color: #293852
+    }
+
+    footer {
+      color: #a0a9b8;
+      font-size: 10px;
+      text-align: center;
+      margin-top: 23px
+    }
+
+    .hero {
+      padding: clamp(24px, 4vw, 42px);
+      background: linear-gradient(125deg, #fff, #f3f7ff);
+      border: 1px solid #e5ebf5;
+      border-radius: 22px;
+      box-shadow: 0 18px 48px #1f31500b
+    }
+
+    .hero h1 {
+      max-width: 740px;
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 1.05;
+      letter-spacing: -.055em;
+      margin: 12px 0
+    }
+
+    .hero p {
+      max-width: 650px;
+      color: #68758d;
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 23px
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 7px;
+      align-items: center
+    }
+
+    .nav-actions[hidden] {
+      display: none
+    }
+
+    .nav-action {
+      border: 1px solid #e2e7f0;
+      background: #fff;
+      color: #40516f;
+      border-radius: 9px;
+      padding: 9px 11px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .nav-action.create {
+      background: #245eea;
+      color: #fff;
+      border-color: #245eea
+    }
+
+    .auth-dialog {
+      width: min(720px, calc(100vw - 28px));
+      border: 1px solid #e6eaf2;
+      border-radius: 18px;
+      padding: 23px;
+      color: #17233b;
+      box-shadow: 0 24px 80px #17233b35
+    }
+
+    .auth-dialog::backdrop {
+      background: #17233b70;
+      backdrop-filter: blur(3px)
+    }
+
+    .dialog-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 18px
+    }
+
+    .dialog-head h2 {
+      font-size: 18px;
+      margin: 0
+    }
+
+    .dialog-head p {
+      font-size: 11px;
+      color: #828da2;
+      margin: 5px 0 0;
+      line-height: 1.5
+    }
+
+    .close-button {
+      border: 0;
+      background: #f2f5fa;
+      color: #53617a;
+      border-radius: 9px;
+      padding: 8px 11px;
+      cursor: pointer
+    }
+
+    .auth-dialog .auth-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .auth-card {
+      padding: 16px;
+      border: 1px solid #edf0f5;
+      border-radius: 12px
+    }
+
+    .shell {
+      max-width: none;
+      padding: 0 36px 42px
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin: 0 -36px 32px;
+      padding: 14px 36px;
+      background: #ffffffed;
+      border-bottom: 1px solid #e8ecf3;
+      backdrop-filter: blur(12px)
+    }
+
+    .brand {
+      gap: 10px
+    }
+
+    .menu-button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #e2e7f0;
+      border-radius: 10px;
+      background: #fff;
+      color: #354661;
+      display: grid;
+      place-items: center;
+      cursor: pointer
+    }
+
+    .menu-button svg {
+      width: 19px;
+      height: 19px
+    }
+
+    .identity {
+      font-weight: 650;
+      color: #465671
+    }
+
+    .status {
+      padding: 8px 10px
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 19;
+      background: #16223a55;
+      opacity: 0;
+      transition: opacity .18s ease
+    }
+
+    .drawer-backdrop[hidden] {
+      display: none
+    }
+
+    .drawer-backdrop.open {
+      opacity: 1
+    }
+
+    .drawer {
+      position: fixed;
+      z-index: 20;
+      inset: 0 auto 0 0;
+      width: min(310px, 86vw);
+      background: #fff;
+      border-right: 1px solid #e6eaf2;
+      box-shadow: 12px 0 36px #17233b1a;
+      transform: translateX(-105%);
+      transition: transform .2s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 14px
+    }
+
+    .drawer.open {
+      transform: translateX(0)
+    }
+
+    .drawer-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 5px 20px
+    }
+
+    .drawer-heading strong {
+      font-size: 14px
+    }
+
+    .drawer-close {
+      border: 0;
+      background: #f3f5f9;
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
+      color: #4b5a74;
+      cursor: pointer
+    }
+
+    .drawer-nav {
+      display: grid;
+      gap: 5px
+    }
+
+    .drawer-nav button {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #586780;
+      border-radius: 10px;
+      padding: 12px;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer
+    }
+
+    .drawer-nav button:hover {
+      background: #f7f8fb
+    }
+
+    .drawer-nav button.active {
+      background: #edf3ff;
+      color: #245eea
+    }
+
+    .drawer-nav button .nav-index {
+      width: 22px;
+      color: #96a1b3;
+      font-size: 10px
+    }
+
+    .drawer-nav button.active .nav-index {
+      color: #245eea
+    }
+
+    .drawer-foot {
+      margin-top: auto;
+      border-top: 1px solid #edf0f5;
+      padding: 15px 7px 3px;
+      color: #8590a4;
+      font-size: 10px;
+      line-height: 1.6
+    }
+
+    .page-content {
+      max-width: 1180px;
+      margin: 0 auto
+    }
+
+    .view[hidden] {
+      display: none !important
+    }
+
+    .intro {
+      margin-bottom: 24px
+    }
+
+    .home-section {
+      margin-top: 24px
+    }
+
+    .home-section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 15px;
+      margin-bottom: 13px
+    }
+
+    .home-section-heading h2 {
+      font-size: 16px;
+      margin: 0
+    }
+
+    .home-section-heading p {
+      font-size: 11px;
+      color: #7e8aa0;
+      line-height: 1.5;
+      margin: 5px 0 0
+    }
+
+    .text-link {
+      color: #53627d;
+      font-size: 12px;
+      font-weight: 650;
+      text-decoration: underline;
+      text-underline-offset: 3px
+    }
+
+    .start-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px
+    }
+
+    .start-action {
+      padding: 16px;
+      border: 1px solid #e8ecf3;
+      border-radius: 14px;
+      background: #fff
+    }
+
+    .start-action h2 {
+      font-size: 13px;
+      margin: 0 0 6px
+    }
+
+    .start-action p {
+      font-size: 11px;
+      line-height: 1.55;
+      color: #78859b;
+      margin: 0 0 13px
+    }
+
+    .start-action .secondary {
+      padding: 9px 11px
+    }
+
+    .research-copy {
+      max-width: 830px;
+      color: #68758d;
+      font-size: 12px;
+      line-height: 1.7
+    }
+
+    .history-state {
+      min-height: 200px
+    }
+
+    .history-state[hidden] {
+      display: none !important
+    }
+
+    .history-loading {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 22px;
+      color: #66748d;
+      font-size: 12px
+    }
+
+    .spinner {
+      height: 17px;
+      width: 17px;
+      border: 2px solid #dfe6f3;
+      border-top-color: #245eea;
+      border-radius: 50%;
+      animation: spin .7s linear infinite
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    @media(max-width:850px) {
+      .layout {
+        grid-template-columns: 1fr
+      }
+
+      .section-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .result-card {
+        min-height: 270px
+      }
+
+      .placeholder {
+        min-height: 150px
+      }
+    }
+
+    @media(max-width:680px) {
+      .shell {
+        padding: 0 16px 30px
+      }
+
+      .topbar {
+        margin: 0 -16px 24px;
+        padding: 12px 16px
+      }
+
+      .top-right {
+        gap: 7px;
+        flex-wrap: wrap;
+        justify-content: flex-end
+      }
+
+      .topbar .status {
+        font-size: 0;
+        padding: 9px
+      }
+
+      .topbar .status .dot {
+        margin: 0
+      }
+
+      .grid,
+      .auth-dialog .auth-grid {
+        grid-template-columns: 1fr
+      }
+
+      .metrics {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .section-grid,
+      .start-actions {
+        grid-template-columns: 1fr
+      }
+
+      .card-pad,
+      .result-card {
+        padding: 18px
+      }
+
+      .full {
+        grid-column: auto
+      }
+
+      .score {
+        font-size: 37px
+      }
+
+      .brand small {
+        max-width: 175px
+      }
+
+      .identity {
+        font-size: 10px
+      }
+
+      .hero-actions>* {
+        width: 100%;
+        text-align: center
+      }
+
+      .hero-actions .primary,
+      .hero-actions .secondary {
+        min-height: 44px
+      }
+
+      .home-section-heading {
+        align-items: flex-start;
+        flex-direction: column
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important
+      }
+    }
+
+    /* Payment Trust Lab research-demo layer and accessible fintech palette. */
+    :root {
+      color: #142D2B;
+      background: #F6F3EB
+    }
+
+    body {
+      color: #142D2B;
+      background: #F6F3EB
+    }
+
+    .shell {
+      color: #142D2B
+    }
+
+    .topbar {
+      background: #F6F3EBed;
+      border-bottom-color: #D9E3DB
+    }
+
+    .brand strong,
+    .intro h1,
+    .hero h1,
+    .card h2,
+    .home-section-heading h2 {
+      color: #142D2B
+    }
+
+    .eyebrow,
+    .score,
+    .shield {
+      color: #237A68
+    }
+
+    .brand .mark {
+      background: #142D2B;
+      box-shadow: 0 8px 18px #142D2b24
+    }
+
+    .menu-button {
+      color: #142D2B;
+      border-color: #b9cbc3
+    }
+
+    .drawer {
+      background: #F6F3EB;
+      border-right-color: #ccd9d1
+    }
+
+    .drawer-nav button.active {
+      background: #D9F0E6;
+      color: #142D2B
+    }
+
+    .drawer-nav button.active .nav-index {
+      color: #237A68
+    }
+
+    .drawer-nav button:hover {
+      background: #e9f3ed
+    }
+
+    .primary,
+    .nav-action.create {
+      background: #237A68;
+      border-color: #237A68
+    }
+
+    .primary:hover {
+      background: #195f52
+    }
+
+    .primary {
+      box-shadow: 0 6px 14px #237a6828
+    }
+
+    .secondary {
+      color: #142D2B;
+      background: #e9eee8;
+      border-color: #cbd9d0
+    }
+
+    .quiet,
+    .text-link {
+      color: #237A68
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: #237A68;
+      box-shadow: 0 0 0 3px #237A6822
+    }
+
+    .meter span {
+      background: #237A68
+    }
+
+    .meter span.high,
+    .decision.fraud,
+    .error {
+      background: #f7e8e4
+    }
+
+    .meter span.high {
+      background: #B94A48
+    }
+
+    .decision.fraud,
+    .error {
+      color: #8f3535
+    }
+
+    .decision.safe,
+    .dot.online {
+      background: #D9F0E6;
+      color: #195f52
+    }
+
+    .dot.online {
+      box-shadow: 0 0 0 4px #237A6818
+    }
+
+    .dot.offline {
+      background: #B94A48
+    }
+
+    .warning,
+    .risk-list li.review {
+      color: #76500f
+    }
+
+    .warning {
+      background: #fff4dc;
+      border-radius: 8px;
+      padding: 7px
+    }
+
+    .risk-list li.review {
+      background: #f7ecd3
+    }
+
+    .risk-list li.high {
+      background: #f7e8e4;
+      color: #8f3535
+    }
+
+    .risk-list li.clear {
+      background: #e9f3ed;
+      color: #195f52
+    }
+
+    .hero {
+      background: linear-gradient(125deg, #fffdf7, #eaf3ed);
+      border-color: #d5e2d9;
+      box-shadow: 0 14px 36px #142d2b0b
+    }
+
+    .card,
+    .start-action {
+      border-color: #dce4dc;
+      box-shadow: 0 8px 24px #142d2b08
+    }
+
+    .tag,
+    .metric {
+      background: #edf1e9;
+      border-color: #d9e2d9;
+      color: #455a51
+    }
+
+    .metric strong {
+      color: #142D2B
+    }
+
+    .threshold,
+    .threshold-line,
+    .field input,
+    .field select,
+    .field textarea {
+      background: #fffdf8
+    }
+
+    .prototype {
+      background: #edf1e9;
+      border-color: #d9e2d9;
+      color: #53665c
+    }
+
+    .drawer-close {
+      background: #e7eee8;
+      color: #142D2B
+    }
+
+    .auth-dialog {
+      color: #142D2B;
+      background: #F6F3EB;
+      border-color: #d3ded6
+    }
+
+    .auth-dialog::backdrop {
+      background: #142D2b85
+    }
+
+    .auth-card {
+      border-color: #dce4dc;
+      background: #fffdf8
+    }
+
+    .close-button {
+      background: #e7eee8;
+      color: #142D2B
+    }
+
+    .nav-action {
+      color: #142D2B;
+      border-color: #cbd9d0;
+      background: #fffdf8
+    }
+
+    .status {
+      border-color: #d3ded6;
+      color: #53665c;
+      background: #fffdf8
+    }
+
+    .history-loading {
+      color: #455a51
+    }
+
+    .spinner {
+      border-color: #d1ded5;
+      border-top-color: #237A68
+    }
+
+    .history-table th {
+      color: #5a7065;
+      border-bottom-color: #dce4dc
+    }
+
+    .history-table td {
+      color: #334d44;
+      border-bottom-color: #e8ece5
+    }
+
+    .pill {
+      background: #e9eee8;
+      color: #40584e
+    }
+
+    .demo-note {
+      margin: 16px 0;
+      padding: 12px 14px;
+      border-left: 3px solid #D49A42;
+      background: #fff9ec;
+      color: #604f31;
+      font-size: 11px;
+      line-height: 1.55
+    }
+
+    .demo-controls {
+      display: flex;
+      gap: 10px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin-top: 14px
+    }
+
+    .demo-controls .field {
+      min-width: min(100%, 280px);
+      flex: 1
+    }
+
+    .demo-graph-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(230px, .8fr);
+      gap: 18px;
+      align-items: stretch
+    }
+
+    .demo-graph-panel {
+      border: 1px solid #dce4dc;
+      border-radius: 14px;
+      background: #fffdf8;
+      padding: 12px
+    }
+
+    .demo-graph-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      min-height: 280px
+    }
+
+    .demo-edge {
+      fill: none;
+      stroke: #6b9b88;
+      stroke-width: 2.5;
+      opacity: .9
+    }
+
+    .demo-edge-label {
+      font: 600 11px Inter, system-ui, sans-serif;
+      fill: #455a51
+    }
+
+    .demo-node {
+      cursor: pointer
+    }
+
+    .demo-node rect {
+      fill: #F6F3EB;
+      stroke: #9bb9a8;
+      stroke-width: 1.5
+    }
+
+    .demo-node text {
+      font: 650 12px Inter, system-ui, sans-serif;
+      fill: #142D2B;
+      text-anchor: middle
+    }
+
+    .demo-node .node-id {
+      font-size: 9px;
+      font-weight: 500;
+      fill: #587267
+    }
+
+    .demo-node.selected rect,
+    .demo-node:focus rect {
+      fill: #D9F0E6;
+      stroke: #237A68;
+      stroke-width: 3
+    }
+
+    .demo-node:focus {
+      outline: none
+    }
+
+    .demo-node:focus-visible rect {
+      stroke: #142D2B;
+      stroke-width: 3
+    }
+
+    .demo-detail {
+      padding: 15px 4px
+    }
+
+    .demo-detail h3 {
+      font-size: 14px;
+      margin: 0 0 5px;
+      color: #142D2B
+    }
+
+    .demo-detail p,
+    .demo-detail li {
+      font-size: 11px;
+      line-height: 1.55;
+      color: #53665c
+    }
+
+    .demo-detail ul {
+      padding-left: 18px
+    }
+
+    .demo-detail .count {
+      font-weight: 750;
+      color: #237A68
+    }
+
+    .research-table {
+      min-width: 610px
+    }
+
+    .research-table td:first-child {
+      font-weight: 700;
+      color: #142D2B
+    }
+
+    .delta-positive {
+      color: #237A68;
+      font-weight: 700
+    }
+
+    .delta-negative {
+      color: #B94A48;
+      font-weight: 700
+    }
+
+    .research-method {
+      padding: 14px 0 0;
+      color: #53665c;
+      font-size: 11px;
+      line-height: 1.65
+    }
+
+    .scenario-status {
+      font-size: 10px;
+      color: #53665c;
+      min-height: 18px
+    }
+
+    .scenario-status.error-text {
+      color: #B94A48
+    }
+
+    .graph-section-heading {
+      margin: 27px 0 12px
+    }
+
+    .graph-section-heading h2 {
+      font-size: 16px;
+      margin: 0
+    }
+
+    .graph-section-heading p {
+      font-size: 11px;
+      color: #657b70;
+      line-height: 1.5;
+      margin: 5px 0 0
+    }
+
+    .url-case-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px
+    }
+
+    .url-case {
+      border-top: 1px solid #dce4dc;
+      padding: 10px 0
+    }
+
+    .url-case code {
+      display: block;
+      color: #142D2B;
+      font-size: 10px;
+      overflow-wrap: anywhere
+    }
+
+    .url-case span {
+      display: block;
+      color: #53665c;
+      font-size: 10px;
+      margin-top: 5px
+    }
+
+    .demo-graph-panel:focus-within {
+      border-color: #237A68
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    select:focus-visible,
+    input:focus-visible,
+    .demo-node:focus-visible rect {
+      outline: 3px solid #237A6888;
+      outline-offset: 2px
+    }
+
+    @media(max-width:760px) {
+      .demo-graph-layout {
+        grid-template-columns: 1fr
+      }
+
+      .demo-graph-svg {
+        min-height: 220px
+      }
+    }
+
+    @media(max-width:560px) {
+      .demo-graph-svg {
+        min-height: 180px
+      }
+
+      .url-case-list {
+        grid-template-columns: 1fr
+      }
+
+      .demo-controls {
+        align-items: stretch
+      }
+
+      .demo-controls button {
+        min-height: 42px
+      }
+    }
+
+    @media(forced-colors:active) {
+      .demo-node rect {
+        stroke: CanvasText
+      }
+
+      .drawer-nav button.active {
+        outline: 2px solid Highlight
+      }
+    }
+
+    .section-rule {
+      border: 0;
+      border-top: 1px solid #e8ecf3;
+      margin: 23px 0
+    }
+
+    .decoded-content {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+      background: #f6f8fb;
+      border: 1px solid #e8ecf3;
+      border-radius: 8px;
+      padding: 10px;
+      color: #26344d;
+      font: 12px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace
+    }
+
+    .error {
+      overflow-wrap: anywhere
+    }
+  </style>
+  <style>
+    .drawer {
+      background: #142D2B;
+      border-right-color: #355a50;
+      color: #F6F3EB
+    }
+
+    .drawer-heading strong {
+      color: #F6F3EB
+    }
+
+    .drawer-close {
+      background: #23463f;
+      color: #F6F3EB
+    }
+
+    .drawer-nav button {
+      color: #D9F0E6
+    }
+
+    .drawer-nav button .nav-index {
+      color: #9ebbb0
+    }
+
+    .drawer-nav button:hover {
+      background: #20483f;
+      color: #fff
+    }
+
+    .drawer-nav button.active {
+      background: #D9F0E6;
+      color: #142D2B
+    }
+
+    .drawer-nav button.active .nav-index {
+      color: #237A68
+    }
+
+    .drawer-foot {
+      border-top-color: #355a50;
+      color: #bed1c7
+    }
+
+    .section-title {
+      color: #142D2B
+    }
+
+    details>summary {
+      cursor: pointer
+    }
+
+    details>summary:focus-visible {
+      outline: 3px solid #237A6888;
+      outline-offset: 3px;
+      border-radius: 3px
+    }
+
+    button:disabled,
+    select:disabled {
+      opacity: .65;
+      cursor: wait
+    }
+
+    .research-table th small {
+      font-size: 9px;
+      color: #657b70;
+      font-weight: 500
+    }
+
+    .demo-graph-svg {
+      overflow: visible
+    }
+
+    .demo-note {
+      border-left-color: #237A68;
+      background: #D9F0E6;
+      color: #142D2B
+    }
+
+    .warning {
+      border-left: 3px solid #D49A42;
+      background: #fff4dc;
+      color: #65470f
+    }
+
+    .risk-list li.review {
+      border-left: 3px solid #D49A42;
+      background: #fff4dc;
+      color: #65470f
+    }
+
+    .demo-edge {
+      cursor: pointer;
+      pointer-events: stroke
+    }
+
+    .demo-edge:focus {
+      outline: none;
+      stroke: #142D2B;
+      stroke-width: 4
+    }
+
+    .demo-edge.selected,
+    .demo-edge.connected {
+      stroke: #237A68;
+      stroke-width: 4;
+      opacity: 1
+    }
+
+    .demo-transactions-wrap {
+      margin-top: 18px
+    }
+
+    .demo-transactions-wrap tr[role=button] {
+      cursor: pointer
+    }
+
+    .demo-transactions-wrap tbody tr:hover,
+    .demo-transactions-wrap tbody tr:focus-visible,
+    .demo-transactions-wrap tbody tr.selected {
+      outline: 2px solid #237A68;
+      outline-offset: -2px;
+      background: #D9F0E6
+    }
+
+    .demo-transaction-detail {
+      margin-top: 14px;
+      padding: 12px 15px;
+      border-left: 3px solid #237A68;
+      background: #fffdf8
+    }
+
+    .demo-transaction-detail h3 {
+      margin: 0 0 7px;
+      color: #142D2B;
+      font-size: 14px
+    }
+
+    .demo-transaction-detail p {
+      margin: 4px 0;
+      color: #53665c;
+      font-size: 12px;
+      line-height: 1.55
+    }
+
+    .demo-transaction-detail .hint {
+      font-size: 10px
+    }
+
+    .graph-section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px
+    }
+
+    .account-link {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #237A68;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 650
+    }
+
+    .account-link:hover {
+      color: #142D2B
+    }
+
+    .demo-transactions-wrap tbody tr.related td {
+      background: #e7f2eb
+    }
+
+    .demo-transactions-wrap tbody tr.unrelated {
+      opacity: .48
+    }
+
+    .demo-node.transaction-endpoint rect {
+      fill: #D9F0E6;
+      stroke: #237A68;
+      stroke-width: 3
+    }
+
+    .demo-node.selected rect {
+      fill: #D9F0E6;
+      stroke: #142D2B;
+      stroke-width: 3
+    }
+
+    .demo-detail p {
+      margin: 7px 0
+    }
+
+    .demo-detail ul {
+      margin: 7px 0 0
+    }
+
+    .demo-detail .hint {
+      margin-top: 0
+    }
+
+    .decision.flagged {
+      background: #f7e8e4;
+      color: #8f3535
+    }
+
+    .decision.not-flagged {
+      background: #e9eee8;
+      color: #455a51
+    }
+
+    .transaction-result .result-decision {
+      font-size: clamp(24px, 3vw, 32px);
+      line-height: 1.15;
+      letter-spacing: -.035em;
+      font-weight: 760;
+      color: #142D2B;
+      margin: 8px 0 7px
+    }
+
+    .transaction-result .result-decision.flagged {
+      color: #8f3535
+    }
+
+    .transaction-result .actual-decision {
+      color: #455a51;
+      font-size: 12px;
+      font-weight: 700;
+      margin: 0 0 10px
+    }
+
+    .transaction-result .explanation {
+      max-width: 360px
+    }
+
+    .model-details {
+      width: 100%;
+      margin-top: 19px;
+      border-top: 1px solid #dce4dc;
+      padding-top: 12px;
+      text-align: left
+    }
+
+    .model-details summary {
+      color: #237A68;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .model-details summary:focus-visible {
+      outline: 3px solid #237A6888;
+      outline-offset: 3px;
+      border-radius: 3px
+    }
+
+    .model-details dl {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      gap: 8px 12px;
+      margin: 12px 0 0;
+      font-size: 11px;
+      line-height: 1.45
+    }
+
+    .model-details dt {
+      color: #68796f
+    }
+
+    .model-details dd {
+      margin: 0;
+      color: #142D2B;
+      font-weight: 600;
+      overflow-wrap: anywhere
+    }
+  </style>
+  <style>
+    :root {
+      --ink: #17333a;
+      --muted: #64787d;
+      --navy: #102f38;
+      --teal: #17464b;
+      --jade: #16836d;
+      --jade-dark: #116653;
+      --jade-soft: #e4f2ed;
+      --amber: #a45f08;
+      --amber-soft: #fff3da;
+      --red: #a5373d;
+      --red-soft: #fae9e7;
+      --paper: #f1f5f2;
+      --line: #dce6e1;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      letter-spacing: 0;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .shell {
+      max-width: 1440px;
+      padding: 18px 26px 40px;
+    }
+
+    .topbar {
+      background: var(--navy);
+      color: #f5faf7;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      box-shadow: none;
+    }
+
+    .brand strong {
+      color: #fff;
+    }
+
+    .brand small,
+    .identity {
+      color: #c3d6d2;
+    }
+
+    .mark {
+      background: var(--jade);
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    .topbar .status {
+      background: #193e46;
+      border-color: #31555b;
+      color: #e0ece8;
+    }
+
+    .nav-action {
+      color: #e8f2ef;
+      border-color: #507078;
+      background: transparent;
+    }
+
+    .nav-action.create,
+    .primary {
+      background: var(--jade);
+      border-color: var(--jade);
+      color: #fff;
+      box-shadow: none;
+    }
+
+    .primary:hover,
+    .nav-action.create:hover {
+      background: var(--jade-dark);
+      border-color: var(--jade-dark);
+    }
+
+    .secondary {
+      color: var(--teal);
+      border-color: #bdcec8;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .secondary:hover {
+      background: var(--jade-soft);
+      border-color: var(--jade);
+    }
+
+    .drawer {
+      background: var(--navy);
+      border-right-color: #31555b;
+    }
+
+    .drawer-nav button.active {
+      background: #1d4b4d;
+      color: #fff;
+      box-shadow: inset 3px 0 var(--jade);
+    }
+
+    .drawer-foot {
+      color: #bdd0ca;
+    }
+
+    .hero {
+      background: var(--navy);
+      color: #f5faf7;
+      border-radius: 10px;
+      box-shadow: none;
+      padding: 34px 38px;
+    }
+
+    .hero .eyebrow {
+      color: #8ed3b7;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      font-size: 36px;
+      line-height: 1.14;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      color: #d0e0dc;
+    }
+
+    .hero .secondary,
+    .hero .text-link {
+      color: #f4faf7;
+      border-color: #67817f;
+    }
+
+    .eyebrow {
+      color: var(--jade-dark);
+      letter-spacing: .08em;
+    }
+
+    .intro h1,
+    .hero h1,
+    .card h2,
+    .section-title {
+      letter-spacing: 0;
+    }
+
+    .intro h1 {
+      color: var(--navy);
+      font-size: 32px;
+    }
+
+    .intro p,
+    .card-head p,
+    .research-copy {
+      color: var(--muted);
+    }
+
+    .card,
+    .mini-card,
+    .result-card,
+    .demo-graph-panel,
+    .demo-transaction-detail {
+      border-color: var(--line);
+      border-radius: 8px;
+      box-shadow: none;
+    }
+
+    .card {
+      background: #fff;
+    }
+
+    .card h2,
+    .section-title,
+    .graph-section-heading h2 {
+      color: var(--navy);
+    }
+
+    .tag {
+      color: var(--teal);
+      background: #e8f0ed;
+      border-color: #d4e1dc;
+    }
+
+    .field label {
+      color: var(--ink);
+    }
+
+    .field label span,
+    .hint,
+    .subtle {
+      color: var(--muted);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      border-color: #bdcdc7;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--jade);
+      box-shadow: 0 0 0 3px #16836d22;
+    }
+
+    .section-rule {
+      border-top-color: var(--line);
+    }
+
+    .result-decision.flagged,
+    .decision.flagged {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .result-decision.not-flagged,
+    .decision.not-flagged {
+      color: var(--jade-dark);
+      background: var(--jade-soft);
+    }
+
+    .risk-list li.high {
+      color: var(--red);
+      background: var(--red-soft);
+    }
+
+    .risk-list li.review {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .risk-list li.clear {
+      color: var(--teal);
+      background: var(--jade-soft);
+    }
+
+    .warning {
+      color: var(--amber);
+      background: var(--amber-soft);
+    }
+
+    .error,
+    .error-text {
+      color: var(--red);
+    }
+
+    .table-wrap {
+      border-color: var(--line);
+      border-radius: 6px;
+    }
+
+    .history-table th {
+      color: var(--teal);
+      background: #edf3f0;
+    }
+
+    .history-table td {
+      color: var(--ink);
+      border-bottom-color: #e7eeea;
+    }
+
+    .account-link {
+      color: var(--jade-dark);
+    }
+
+    .demo-edge {
+      stroke: #5c9181;
+    }
+
+    .demo-node rect {
+      fill: #e6f1ec;
+      stroke: #5d8f7e;
+    }
+
+    .demo-node.selected rect {
+      fill: #c8e8da;
+      stroke: var(--jade-dark);
+    }
+
+    .section-grid {
+      gap: 12px;
+    }
+
+    .mini-card {
+      background: #fff;
+    }
+
+    .mini-card h3 {
+      color: var(--teal);
+    }
+
+    .model-details summary {
+      color: var(--jade-dark);
+    }
+
+    .model-details dd {
+      color: var(--ink);
+    }
+
+    .result-card {
+      align-self: start;
+    }
+
+    .primary:focus-visible,
+    .secondary:focus-visible,
+    .nav-action:focus-visible,
+    .drawer-nav button:focus-visible {
+      outline: 3px solid #e0a23b;
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 680px) {
+      .shell {
+        padding: 10px 12px 28px;
+      }
+
+      .topbar {
+        padding: 12px;
+      }
+
+      .hero {
+        padding: 26px 20px;
+      }
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .intro h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+
+  <style id="payment-trust-cleanup">
+    :root {
+      --ink: #202b35 !important;
+      --muted: #64717d !important;
+      --navy: #173b4b !important;
+      --teal: #245b68 !important;
+      --jade: #167d70 !important;
+      --jade-dark: #10665c !important;
+      --paper: #f5f7f8 !important;
+      --line: #dce3e8 !important;
+      font-family: Inter, "Segoe UI", Arial, sans-serif !important;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    body, button, input, select, textarea { font-family: Inter, "Segoe UI", Arial, sans-serif !important; }
+    body { background: #f5f7f8 !important; color: #202b35 !important; }
+    .topbar { background: #173b4b !important; box-shadow: none !important; }
+    .brand .mark { display: none !important; }
+    .brand strong { letter-spacing: -.02em; }
+    .hero { background: #173b4b !important; border: 1px solid #244d5b !important; box-shadow: none !important; }
+    .hero h1 { color: #ffffff !important; font-size: clamp(2rem, 4vw, 3rem) !important; letter-spacing: -.035em !important; }
+    .hero p { color: #e3edf0 !important; max-width: 760px; }
+    .hero .eyebrow { color: #9ee2d1 !important; letter-spacing: .08em !important; }
+    .hero-actions { margin-top: 20px !important; }
+    .hero .text-link { color: #ffffff !important; }
+    button.primary, .nav-action.create { background: #167d70 !important; color: #ffffff !important; border-color: #167d70 !important; }
+    button.secondary, .nav-action, .drawer-nav button { color: #244451 !important; }
+    button.secondary { background: #ffffff !important; border-color: #cbd8de !important; }
+    button.secondary:hover, .nav-action:hover { background: #eaf2f4 !important; }
+    .card, .mini-card, .panel, .result-card { box-shadow: none !important; border-color: #dce3e8 !important; }
+    h1, h2, h3, h4 { color: #202b35; letter-spacing: -.015em; }
+    p, .muted, .help-text { color: #64717d; }
+    .section-grid { gap: 14px !important; }
+    .mini-card { padding: 20px !important; }
+    .mini-card .actions { display: none !important; }
+    .status { border-color: #42616b !important; }
+    .drawer { background: #ffffff !important; }
+    .drawer-nav button.active { background: #e7f3f0 !important; color: #12695e !important; }
+    .result-decision.flagged { background: #fff0ed !important; color: #a33c35 !important; }
+    .result-decision.not-flagged { background: #e7f4ef !important; color: #176b54 !important; }
+    input, select, textarea { border-color: #cbd6dc !important; }
+    :focus-visible { outline: 3px solid #5bb9aa !important; outline-offset: 2px !important; }
+    @media (max-width: 680px) { .hero { padding: 24px !important; } .topbar { gap: 10px; } .brand small { display: none; } }
+  </style>
+  <style id="payment-trust-final-polish">
+    :root { --ink:#1f3038; --muted:#5d6d76; --navy:#123b46; --teal:#176a68; --jade:#147d70; --jade-dark:#0f655b; --paper:#f4f7f7; --line:#d6e0e2; font-family: "Segoe UI", Arial, sans-serif; }
+    html, body, button, input, select, textarea { font-family: "Segoe UI", Arial, sans-serif !important; }
+    body { color:#1f3038 !important; background:#f4f7f7 !important; }
+    .topbar { background:#123b46 !important; color:#fff !important; }
+    .brand strong, .brand small, #identityLabel { color:#fff !important; }
+    .brand .mark { display:none !important; }
+    .nav-action { color:#fff !important; background:#234f5a !important; border:1px solid #6e9199 !important; opacity:1 !important; }
+    .nav-action.create { color:#fff !important; background:#147d70 !important; border-color:#147d70 !important; }
+    .nav-action:disabled { opacity:.88 !important; color:#fff !important; background:#315965 !important; border-color:#6d9098 !important; cursor:not-allowed !important; }
+    button:disabled, select:disabled { opacity:.72 !important; color:#42545b !important; background:#e1e8e9 !important; cursor:not-allowed !important; }
+    .hero { background:#123b46 !important; color:#fff !important; border:1px solid #2a5962 !important; box-shadow:none !important; }
+    .hero h1 { color:#fff !important; font-size:clamp(2rem,4vw,3rem) !important; }
+    .hero p { color:#eaf2f3 !important; }
+    .hero .eyebrow { color:#9de0d1 !important; }
+    .hero .text-link { color:#fff !important; }
+    .card, .mini-card, .result-card, .panel { background:#fff !important; border-color:#d7e1e3 !important; box-shadow:none !important; }
+    h1,h2,h3,h4,label,.card-head h2 { color:#1f3038 !important; }
+    p,.hint,.muted,.explanation,.intro p,.home-section-heading p { color:#5d6d76 !important; }
+    .drawer { background:#fff !important; color:#1f3038 !important; }
+    .drawer-heading strong { color:#1f3038 !important; }
+    .drawer-close { color:#fff !important; background:#174b4b !important; }
+    .drawer-nav button { color:#2c4650 !important; background:transparent !important; opacity:1 !important; }
+    .drawer-nav button:hover { background:#f0f5f5 !important; }
+    .drawer-nav button.active { color:#075e55 !important; background:#e2f2ee !important; }
+    .drawer-nav button.active .nav-index { color:#147d70 !important; }
+    .drawer-foot { color:#526970 !important; border-color:#d7e1e3 !important; }
+    button.primary, .nav-action.create { background:#147d70 !important; color:#fff !important; border-color:#147d70 !important; }
+    button.secondary { color:#17434c !important; background:#fff !important; border-color:#b9cdd0 !important; }
+    button.secondary:hover, .nav-action:hover { background:#eaf3f2 !important; color:#123b46 !important; }
+    input,select,textarea { color:#1f3038 !important; background:#fff !important; border-color:#bdcdd1 !important; }
+    input::placeholder,textarea::placeholder { color:#687b82 !important; opacity:1 !important; }
+    .result-decision.flagged { color:#8b2929 !important; background:#fff0ef !important; }
+    .result-decision.not-flagged { color:#145d4c !important; background:#e4f3ed !important; }
+    .paysim-inspector { margin-bottom:24px; }
+    .relationship-output { margin-top:18px; padding:16px; border:1px solid #d6e2e3; border-radius:10px; background:#f8fbfb; color:#1f3038; }
+    .relationship-output p,.relationship-output li { color:#435a62 !important; line-height:1.55; }
+    .relationship-output ul { padding-left:22px; }
+    .relationship-output .explanation { margin-top:12px; font-size:13px; }
+    .research-extra { margin-top:20px; }
+    .tag { color:#174f4b !important; background:#e5f2ee !important; border-color:#c6e3d9 !important; }
+    :focus-visible { outline:3px solid #3a9e8f !important; outline-offset:3px !important; }
+    @media(max-width:680px) { .topbar { gap:8px; } .brand small { display:none; } .nav-actions { gap:6px; } .nav-action { padding:8px 10px !important; } .paysim-inspector .grid { grid-template-columns:1fr !important; } }
+  </style>
+
+</head>
+
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><button class="menu-button" id="menuButton" type="button" aria-label="Open navigation"
+          aria-expanded="false" aria-controls="navigationDrawer"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg></button>
+        <div><strong>Payment Trust Lab</strong><small>PaySim fraud intelligence · research prototype</small></div>
+      </div>
+      <div class="top-right"><span class="identity" id="identityLabel">Guest session</span>
+        <div class="nav-actions" id="signedOutActions"><button class="nav-action" id="openLogin" type="button">Sign
+            in</button><button class="nav-action create" id="openRegister" type="button">Create account</button></div>
+        <div class="nav-actions" id="signedInActions" hidden><button class="nav-action" id="signOutButton"
+            type="button">Sign out</button></div>
+        <div class="status" aria-live="polite"><i class="dot" id="healthDot"></i><span id="healthText">Connecting</span>
+        </div>
+      </div>
+    </header>
+    <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+    <aside class="drawer" id="navigationDrawer" aria-label="Dashboard navigation" aria-hidden="true">
+      <div class="drawer-heading"><strong>Workspace</strong><button class="drawer-close" id="drawerClose" type="button"
+          aria-label="Close navigation">×</button></div>
+      <nav class="drawer-nav" aria-label="Main navigation"><button class="active" data-view="overview"
+          aria-current="page"><span class="nav-index">01</span>Home</button><button data-view="transaction"><span
+            class="nav-index">02</span>Transaction Analysis</button><button data-view="url"><span
+            class="nav-index">03</span>QR &amp; Link Safety</button><button data-view="graph"><span
+            class="nav-index">04</span>Transaction Network</button><button data-view="history"><span
+            class="nav-index">05</span>History</button><button data-view="research"><span
+            class="nav-index">06</span>Research &amp; Model Evaluation</button></nav>
+      <div class="drawer-foot">Synthetic PaySim data<br>No bank or UPI account connection</div>
+    </aside>
+    <div class="page-content">
+
+      <section class="view" id="view-overview">
+        <section class="hero">
+          <div class="eyebrow">PAYMENT TRUST LAB · TRANSACTION RESEARCH &amp; PAYMENT SAFETY</div>
+          <h1>Payment Trust Lab</h1>
+          <p>A workspace for fraud analysts and researchers to assess transaction records, inspect selected payment
+            networks, review model results, and examine QR or link warning signs.</p>
+          <div class="hero-actions"><a class="text-link" href="#howItWorks">See what this workspace includes ↓</a></div>
+        </section>
+        <section class="home-section" id="howItWorks">
+          <div class="home-section-heading">
+            <div>
+              <h2>Workflows</h2>
+              <p>Transaction analysis and QR/link review address different kinds of payment risk.</p>
+            </div>
+          </div>
+          <div class="section-grid">
+            <article class="card mini-card">
+              <h3>Transaction Analysis</h3>
+              <p>Assess PaySim-style transaction records with the primary saved XGBoost model. Optional GNN output is a
+                separate comparison.</p>
+              <div class="actions"><button class="secondary" type="button" data-go="transaction">Open
+                  assessment</button></div>
+            </article>
+            <article class="card mini-card">
+              <h3>QR &amp; Link Safety</h3>
+              <p>Decode QR content and inspect local website warning signs. UPI payment requests are recognized but not
+                verified or executed.</p>
+              <div class="actions"><button class="secondary" type="button" data-go="url">Check a QR or link</button>
+              </div>
+            </article>
+            <article class="card mini-card">
+              <h3>Transaction Network</h3>
+              <p>Explore a selected PaySim test-split network sample or inspect your own saved assessment pairs. Neither
+                is a complete bank account history.</p>
+              <div class="actions"><button class="secondary" type="button" data-go="graph">Explore network</button>
+              </div>
+            </article>
+            <article class="card mini-card">
+              <h3>History &amp; Model Evaluation</h3>
+              <p>Review saved assessments separately from offline four-model, ensemble, and GNN evaluation results.</p>
+              <div class="actions"><button class="secondary" type="button" data-go="research">Review results</button>
+              </div>
+            </article>
+          </div>
+        </section>
+        <section class="home-section">
+          <div class="home-section-heading">
+            <div>
+              <h2>Data and boundaries</h2>
+              <p>Transaction models use synthetic PaySim records; QR/link checks use local heuristics.</p>
+            </div><button class="secondary" type="button" data-go="research">Open model evaluation</button>
+          </div>
+          <p class="research-copy">The application does not connect to bank accounts or personal UPI history. A QR
+            payment
+            URI is only parsed for display; no payment is initiated and the payee is not verified.</p>
+        </section>
+      </section>
+
+      <dialog class="auth-dialog" id="authDialog" aria-labelledby="authDialogTitle">
+        <div class="dialog-head">
+          <div>
+            <h2 id="authDialogTitle">Your local demo account</h2>
+            <p>Create an account to save assessments to a private local history. No bank or UPI connection is used.</p>
+          </div><button class="close-button" id="closeAuth" type="button"
+            aria-label="Close account dialog">Close</button>
+        </div>
+        <div class="auth-grid" id="authForms">
+          <form id="loginForm" class="auth-card">
+            <h3 class="section-title">Sign in</h3>
+            <div class="field"><label for="loginUser">Username</label><input id="loginUser" name="username"
+                minlength="3" maxlength="32" required autocomplete="username"></div>
+            <div class="field" style="margin-top:9px"><label for="loginPass">Password</label><input id="loginPass"
+                name="password" type="password" minlength="8" required autocomplete="current-password"></div><button
+              class="secondary" style="margin-top:11px" type="submit">Sign in</button>
+          </form>
+          <form id="registerForm" class="auth-card">
+            <h3 class="section-title">Create account</h3>
+            <div class="field"><label for="registerUser">Username</label><input id="registerUser" name="username"
+                minlength="3" maxlength="32" pattern="[A-Za-z0-9_.-]+" required autocomplete="username"></div>
+            <div class="field" style="margin-top:9px"><label for="registerPass">Password <span>8 characters
+                  minimum</span></label><input id="registerPass" name="password" type="password" minlength="8"
+                maxlength="128" required autocomplete="new-password"></div><button class="primary"
+              style="margin-top:11px" type="submit">Create local account</button>
+          </form>
+        </div>
+        <div id="signedInPanel" hidden>
+          <p class="subtle">Your saved assessment history is private to this account on this local demo.</p>
+        </div>
+        <div class="error" id="authError" role="alert"></div>
+      </dialog>
+
+      <section class="view" id="view-transaction" hidden>
+        <div class="intro">
+          <div class="eyebrow">Transaction records</div>
+          <h1>Transaction Analysis</h1>
+          <p>Assess a single PaySim-style record. The saved XGBoost model is primary; a node-only GNN comparison is
+            optional.</p>
+        </div>
+        <div class="layout">
+          <section class="card card-pad">
+            <div class="card-head">
+              <div>
+                <h2>Transaction record</h2>
+                <p>Enter the transaction type, PaySim time step, amount, and before/after balances. IDs only label
+                  transactions saved to your local account history; they are not XGBoost or node-only GNN features.</p>
+              </div><span class="tag">Chronological XGBoost</span>
+            </div>
+            <div class="demo-note"><strong>Fictional examples.</strong> Choose an example to fill the form, then submit
+              it to get a fresh result from the saved model. The examples have no fraud labels or expected scores.</div>
+            <div class="demo-controls">
+              <div class="field"><label for="demoScenario">Fictional transaction example</label><select
+                  id="demoScenario" disabled>
+                  <option>Loading demo inputs…</option>
+                </select></div><button class="secondary" id="loadDemoScenario" type="button" disabled>Load into
+                form</button><span id="demoDataStatus" class="scenario-status" role="status"></span>
+            </div>
+            <div class="demo-note"><strong>Labelled PaySim samples.</strong> These eight genuine synthetic transactions
+              come from the chronological test split. Their dataset label is shown separately; it is never sent to
+              either model. A single example is not an accuracy estimate.</div>
+            <div class="demo-controls">
+              <div class="field"><label for="paysimExample">PaySim test example</label><select id="paysimExample"
+                  disabled>
+                  <option>Loading labelled samples…</option>
+                </select></div><button class="secondary" id="loadPaySimExample" type="button" disabled>Load labelled
+                example</button><span id="paysimExampleStatus" class="scenario-status" role="status"></span>
+            </div>
+            <p id="paysimGroundTruth" class="hint" role="status">Known PaySim label: select a labelled example.</p>
+            <div id="paysimModelComparison" class="hint" role="status">Run XGBoost and the experimental node-only GNN
+              independently to compare their predictions with the known label.</div>
+            <form id="transactionForm" novalidate>
+              <div class="grid">
+                <div class="field"><label for="type">Transaction type <span>PaySim category</span></label><select
+                    id="type" name="type" required>
+                    <option value="CASH_OUT">Cash out</option>
+                    <option value="TRANSFER">Transfer</option>
+                    <option value="CASH_IN">Cash in</option>
+                    <option value="DEBIT">Debit</option>
+                    <option value="PAYMENT">Payment</option>
+                  </select></div>
+                <div class="field"><label for="step">Time step <span>PaySim time index · integer ≥
+                      1</span></label><input id="step" name="step" type="number" min="1" step="1" value="500" required>
+                </div>
+                <div class="field"><label for="amount">Transaction amount <span>PaySim amount units</span></label><input
+                    id="amount" name="amount" type="number" min="0" step="any" placeholder="e.g. 25000" required></div>
+                <div class="field"><label for="oldbalanceOrg">Origin balance · before <span>sender before
+                      transaction</span></label><input id="oldbalanceOrg" name="oldbalanceOrg" type="number" min="0"
+                    step="any" placeholder="e.g. 30000" required></div>
+                <div class="field"><label for="newbalanceOrig">Origin balance · after <span>sender after
+                      transaction</span></label><input id="newbalanceOrig" name="newbalanceOrig" type="number" min="0"
+                    step="any" placeholder="e.g. 5000" required></div>
+                <div class="field"><label for="oldbalanceDest">Destination balance · before <span>recipient before
+                      transaction</span></label><input id="oldbalanceDest" name="oldbalanceDest" type="number" min="0"
+                    step="any" placeholder="e.g. 1000" required></div>
+                <div class="field"><label for="newbalanceDest">Destination balance · after <span>recipient after
+                      transaction</span></label><input id="newbalanceDest" name="newbalanceDest" type="number" min="0"
+                    step="any" placeholder="e.g. 26000" required></div>
+                <div class="field"><label for="nameOrig">Sender account ID <span>optional</span></label><input
+                    id="nameOrig" name="nameOrig" maxlength="128" placeholder="PaySim-style ID"></div>
+                <div class="field"><label for="nameDest">Recipient account ID <span>optional</span></label><input
+                    id="nameDest" name="nameDest" maxlength="128" placeholder="PaySim-style ID"></div>
+              </div>
+              <div class="error" id="transactionError" role="alert"></div>
+              <div class="actions"><button class="primary" id="submitButton" type="submit">Run model
+                  assessment</button><button class="secondary" id="gnnSubmitButton" type="button">Assess with
+                  experimental GNN</button><button class="secondary" id="exampleButton" type="button">Fill a basic
+                  example</button><span class="hint">XGBoost remains the primary model. The optional node-only GNN is
+                  experimental and requires sign-in.</span></div>
+              <div class="error" id="gnnError" role="alert"></div>
+            </form>
+          </section>
+          <aside class="card result-card" aria-live="polite">
+            <div class="result-top">
+              <h2>Assessment result</h2>
+              <div class="shield">✓</div>
+            </div>
+            <div id="transactionResult" class="placeholder">
+              <div class="empty-icon">⌁</div><strong>Ready to assess</strong>
+              <p>Submit the transaction to see whether the primary model flags it for review.</p>
+            </div>
+            <hr class="section-rule">
+            <details class="secondary-model">
+              <summary>Secondary model comparison · node-only GNN</summary>
+              <p class="hint">Separate experimental model using transaction fields only; no graph history. It is not the
+                primary assessment.</p>
+              <div id="gnnResult" class="placeholder"><strong>Not run</strong>
+                <p>Run the GNN comparison separately if useful.</p>
+              </div>
+            </details>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-graph" hidden>
+        <div class="intro">
+          <div class="eyebrow">Account relationships</div>
+          <h1>Explore connections</h1>
+          <p>The graph and first inspector use a small genuine synthetic PaySim test-split sample. The separate private-history inspector searches only transactions you submitted while signed in.</p>
+        </div>
+        <section aria-labelledby="demoGraphTitle">
+          <div class="graph-section-heading">
+            <div>
+              <h2 id="demoGraphTitle">Selected PaySim test-split network</h2>
+              <p>Select an account in the graph or table to explore its transactions.</p>
+            </div><button id="clearDemoSelection" class="secondary" type="button" disabled>Clear selection</button>
+          </div>
+          <div class="demo-graph-layout">
+            <div class="demo-graph-panel"><svg id="demoGraphSvg" class="demo-graph-svg" viewBox="0 0 630 365" role="img"
+                aria-labelledby="demoGraphSvgTitle demoGraphSvgDesc">
+                <title id="demoGraphSvgTitle">Selected PaySim test-split account relationships</title>
+                <desc id="demoGraphSvgDesc">Transaction connections in the selected synthetic PaySim test-split sample.</desc>
+                <defs>
+                  <marker id="demoArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                    <path d="M0,0 L8,4 L0,8 z" fill="#6b9b88" />
+                  </marker>
+                </defs>
+                <g id="demoGraphEdges"></g>
+                <g id="demoGraphNodes"></g>
+              </svg>
+              <p class="hint">The graph and table use the same three selected synthetic PaySim test-split transactions. Incoming means money received; outgoing means money sent. These sample counts are not complete account histories and do not prove fraud.</p>
+            </div>
+            <aside class="demo-graph-panel demo-detail" id="demoAccountDetails" aria-live="polite">
+              <h3>Select an account</h3>
+              <p>Select an account in the graph or table to see its connections and amounts.</p>
+            </aside>
+          </div>
+          <p id="demoGraphStatus" class="scenario-status" role="status">Select an account in the graph or table to
+            explore its transactions.</p>
+          <div class="table-wrap demo-transactions-wrap">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Sender</th>
+                  <th>Recipient</th>
+                  <th>Amount</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="demoTransactionRows"></tbody>
+            </table>
+            <p id="demoTransactionEmpty" class="hint" hidden>No PaySim sample transaction rows are available.</p>
+          </div>
+          <section id="demoTransactionDetails" class="demo-transaction-detail" aria-live="polite">
+            <h3>Transaction details</h3>
+            <p>Select a transaction row or connection line to see the details.</p>
+          </section>
+        </section>
+        <section class="card card-pad paysim-inspector" aria-labelledby="paysimInspectorTitle">
+          <div class="card-head">
+            <div>
+              <h2 id="paysimInspectorTitle">Inspect the PaySim sample</h2>
+              <p>Search the genuine three-row chronological test-split sample shown in this network. Counts below apply only to these three rows, not the full PaySim dataset.</p>
+            </div><span class="tag">Dataset sample</span>
+          </div>
+          <form id="paysimGraphForm">
+            <div class="grid">
+              <div class="field"><label for="paysimGraphSource">Sender account ID</label><input id="paysimGraphSource" name="source" required maxlength="128" list="paysimAccountIds" placeholder="e.g. C2127461691"></div>
+              <div class="field"><label for="paysimGraphTarget">Recipient account ID</label><input id="paysimGraphTarget" name="target" required maxlength="128" list="paysimAccountIds" placeholder="e.g. C613935961"></div>
+            </div>
+            <datalist id="paysimAccountIds"></datalist>
+            <p class="hint">Tip: use the account IDs displayed in the graph or table below. Search is case-sensitive.</p>
+            <div class="actions"><button class="primary" type="submit">Analyze PaySim sample</button></div>
+          </form>
+          <div id="paysimGraphResult" class="relationship-output" aria-live="polite"><strong>Choose two account IDs</strong><p>The sample relationship counts will appear here.</p></div>
+        </section>
+        <div class="graph-section-heading">
+          <h2>My saved assessment history</h2>
+          <p>Private history from your submitted assessments, not complete PaySim history.</p>
+        </div>
+        <div class="layout">
+          <section class="card card-pad">
+            <div class="card-head">
+              <div>
+                <h2>Inspect my saved account pair</h2>
+                <p>This private inspector searches only transactions you previously submitted while signed in. It is not a PaySim dataset lookup. Use the sample inspector above for the provided PaySim test-split records.</p>
+              </div><span class="tag">Your account</span>
+            </div>
+            <form id="graphForm">
+              <div class="grid">
+                <div class="field"><label for="graphSource">Sender account ID</label><input id="graphSource"
+                    name="source_account" required maxlength="128" placeholder="Account identifier"></div>
+                <div class="field"><label for="graphTarget">Recipient account ID</label><input id="graphTarget"
+                    name="target_account" required maxlength="128" placeholder="Account identifier"></div>
+              </div>
+              <div class="error" id="graphError" role="alert"></div>
+              <div class="actions"><button class="primary" type="submit">Analyze my saved history</button></div>
+            </form>
+          </section>
+          <aside class="card result-card">
+            <div class="result-top">
+              <h2>Relationship summary</h2>
+              <div class="shield">↗</div>
+            </div>
+            <div id="graphResult" class="placeholder">
+              <div class="empty-icon">◇</div><strong>Sign in to view saved activity</strong>
+              <p>This summary uses assessments saved to your account.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-url" hidden>
+        <div class="intro">
+          <div class="eyebrow">URL checks</div>
+          <h1>Check a link</h1>
+          <p>Paste a URL or upload a QR image to review a small set of warning signs. Links are never opened.</p>
+        </div>
+        <div class="layout">
+          <section class="card card-pad">
+            <div class="card-head">
+              <div>
+                <h2>Check a URL</h2>
+                <p>Use a link directly, or decode one QR image and check its contents locally.</p>
+              </div><span class="tag">No network visits</span>
+            </div>
+            <form id="urlForm">
+              <div class="field"><label for="urlInput">URL to inspect</label><input id="urlInput" name="url" type="text"
+                  maxlength="2048" required placeholder="https://example.com/path"></div>
+              <div class="error" id="urlError" role="alert"></div>
+              <div class="actions"><button class="primary" type="submit">Check this URL</button></div>
+            </form>
+            <hr class="section-rule">
+            <form id="qrForm">
+              <div class="field"><label for="qrImage">Scan a QR image</label><input id="qrImage" name="image"
+                  type="file" accept="image/*" required><span class="hint">Image limit: 5 MB. The first QR code found is
+                  checked locally; decoded links are never opened.</span></div>
+              <div class="error" id="qrError" role="alert"></div>
+              <div class="actions"><button class="secondary" id="qrSubmit" type="submit">Decode and check QR</button>
+              </div>
+            </form>
+          </section>
+          <aside class="card result-card">
+            <div class="result-top">
+              <h2>Indicator review</h2>
+              <div class="shield">⌕</div>
+            </div>
+            <div id="urlResult" class="placeholder">
+              <div class="empty-icon">◎</div><strong>Waiting for a URL</strong>
+              <p>“No listed indicators” must not be interpreted as “safe.”</p>
+            </div>
+          </aside>
+        </div>
+        <details class="home-section">
+          <summary class="section-title">Documented local-rule test cases</summary>
+          <p class="hint">These strings document rule coverage. They are not opened, resolved, or fetched.</p>
+          <div class="url-case-list">
+            <div class="url-case"><code>http://example.test/path</code><span>Expected indicator: non-HTTPS scheme</span>
+            </div>
+            <div class="url-case"><code>https://demo:demo-pass@example.test/</code><span>Expected indicator: embedded
+                user information</span></div>
+            <div class="url-case"><code>https://192.0.2.10/</code><span>Expected indicator: literal IP host</span></div>
+            <div class="url-case"><code>https://xn--bcher-kva.example/</code><span>Expected indicator: punycode
+                label</span></div>
+            <div class="url-case"><code>https://bit.ly/demo</code><span>Expected indicator: known shortener
+                hostname</span></div>
+            <div class="url-case"><code>https://example.test:8443/</code><span>Expected indicator: non-standard
+                port</span></div>
+            <div class="url-case"><code>https://example.test/login?verify=payment</code><span>Expected indicator:
+                sensitive terms in host/path/query text</span></div>
+          </div>
+        </details>
+      </section>
+
+      <section class="view" id="view-history" hidden>
+        <div class="intro">
+          <div class="eyebrow">Your local account</div>
+          <h1>Assessment history</h1>
+          <p>Review primary XGBoost, experimental node-only GNN, and URL checks saved by the signed-in account.</p>
+        </div>
+        <section class="card card-pad">
+          <div class="card-head">
+            <div>
+              <h2>Your saved assessments</h2>
+              <p>Only records for your current account appear here.</p>
+            </div><button id="refreshHistory" class="secondary" type="button">Refresh history</button>
+          </div>
+          <div id="historyMessage" class="placeholder history-state" role="status" aria-live="polite"></div>
+          <div class="table-wrap" id="historyTableWrap" hidden>
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Date and time</th>
+                  <th>Assessment</th>
+                  <th>Result</th>
+                  <th>Model score</th>
+                </tr>
+              </thead>
+              <tbody id="historyRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+      <section class="view" id="view-research" hidden>
+        <div class="intro">
+          <div class="eyebrow">Evaluation · synthetic data</div>
+          <h1>Research Results</h1>
+          <p>Offline chronological evaluation of the saved transaction model. These metrics describe the held-out PaySim
+            experiment, not live application performance or real-world banking outcomes.</p>
+        </div>
+        <section class="card card-pad">
+          <div class="card-head">
+            <div>
+              <h2>Chronological test comparison</h2>
+              <p>Both models evaluated on the same saved chronological test period; thresholds selected independently on
+                validation.</p>
+            </div><span class="tag">Synthetic PaySim</span>
+          </div>
+          <div class="table-wrap">
+            <table class="history-table research-table">
+              <thead>
+                <tr>
+                  <th>Test metric</th>
+                  <th>Main XGBoost<br><small>decision threshold 95%</small></th>
+                  <th>Graph-feature XGBoost<br><small>decision threshold 88%</small></th>
+                  <th>Difference</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Precision</td>
+                  <td>97.49%</td>
+                  <td>97.76%</td>
+                  <td class="delta-positive">+0.27 pp</td>
+                </tr>
+                <tr>
+                  <td>Recall</td>
+                  <td>80.25%</td>
+                  <td>79.25%</td>
+                  <td class="delta-negative">−1.00 pp</td>
+                </tr>
+                <tr>
+                  <td>F1</td>
+                  <td>88.04%</td>
+                  <td>87.54%</td>
+                  <td class="delta-negative">−0.50 pp</td>
+                </tr>
+                <tr>
+                  <td>Average precision</td>
+                  <td>96.39%</td>
+                  <td>96.05%</td>
+                  <td class="delta-negative">−0.34 pp</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="research-method">The past-only graph candidate adds four approximate account-degree features to
+            XGBoost. Its validation-selected threshold was 88%; the main baseline uses a fixed validation-selected
+            threshold of 95%. Precision rose slightly, while recall, F1, and average precision declined. The candidate
+            did not improve the baseline. This is a graph-feature experiment, not a GNN, and no performance gain is
+            claimed.</p>
+          <p class="hint">The transaction score is not calibrated as a real-world fraud probability. Source of truth:
+            <code>Experiments/artifacts/chronological/xgboost/main_features_results.json</code> and
+            <code>Experiments/artifacts/temporal_graph_xgboost/results.json</code>. Offline evaluation on synthetic
+            PaySim; not live application performance or real-world banking results.
+          </p>
+        </section>
+        <section class="card card-pad research-extra">
+          <div class="card-head"><div><h2>Broader offline model comparison</h2><p>Separate experiment using a deterministic 10% training sample and the same chronological test split. Do not compare these values as if they came from the same training run as the table above.</p></div><span class="tag">Offline experiment</span></div>
+          <div class="table-wrap"><table class="history-table research-table"><thead><tr><th>Model</th><th>Precision</th><th>Recall</th><th>F1</th><th>Average precision</th></tr></thead><tbody>
+            <tr><td>Random Forest</td><td>98.20%</td><td>78.44%</td><td>87.21%</td><td>92.70%</td></tr>
+            <tr><td>XGBoost</td><td>97.08%</td><td>81.06%</td><td>88.35%</td><td>96.21%</td></tr>
+            <tr><td>Logistic Regression</td><td>91.71%</td><td>66.37%</td><td>77.01%</td><td>85.96%</td></tr>
+            <tr><td>Isolation Forest</td><td>16.01%</td><td>20.44%</td><td>17.95%</td><td>11.27%</td></tr>
+            <tr><td>Strict majority ensemble</td><td>99.54%</td><td>67.00%</td><td>80.09%</td><td>80.00%</td></tr>
+            <tr><td>GNN node-only</td><td>90.21%</td><td>59.31%</td><td>71.57%</td><td>75.51%</td></tr>
+            <tr><td>GNN graph-enabled</td><td>89.56%</td><td>70.25%</td><td>78.74%</td><td>77.75%</td></tr>
+          </tbody></table></div>
+          <p class="hint">The primary live app uses the main XGBoost artifact. The live optional GNN is node-only; graph-enabled GNN results are offline only. XGBoost led the individual models by F1 and average precision in this separate experiment; the ensemble had higher precision but lower recall.</p>
+        </section>
+        <section class="home-section">
+          <h2 class="section-title">Method and limitations</h2>
+          <p class="research-copy">The transaction baseline uses chronological train, validation, and test partitions
+            and six numeric fields plus one-hot transaction type. The temporal graph-feature experiment updates graph
+            state using earlier PaySim steps only; rows sharing a step are featurized before that step's edges are
+            observed. Fraud labels are not graph-feature inputs. Count-Min Sketch collisions may overestimate degrees.
+          </p>
+          <div class="section-grid">
+            <article class="card mini-card">
+              <h3>Account relationship summary</h3>
+              <p>The app's authenticated summary uses only that user's saved assessments. It is separate from the selected PaySim sample and offline graph-feature experiment.</p>
+            </article>
+            <article class="card mini-card">
+              <h3>URL indicator rules</h3>
+              <p>Uses local text and host rules without visiting URLs. It is not a trained malicious-URL classifier and
+                does not guarantee safety.</p>
+            </article>
+            <article class="card mini-card">
+              <h3>Separate components</h3>
+              <p>No validated fusion method combines transaction, account-history, demo-graph, and URL-risk outputs.</p>
+            </article>
+          </div>
+        </section>
+      </section>
+      <footer>Final-year research demo · synthetic data · no bank or UPI account connection</footer>
+    </div>
+  </main>
+  <script>
+    const $ = id => document.getElementById(id), tokenKey = 'paysim_demo_token';
+    let token = localStorage.getItem(tokenKey), username = null, authReady = !token, researchDemoData = null, selectedDemoAccountId = null, labelledPaySimData = null, selectedLabelledPaySimExample = null, labelledModelPredictions = {};
+    let historyRequest = 0;
+    const navButtons = [...document.querySelectorAll('.drawer-nav button[data-view]')];
+    function showView(name) { navButtons.forEach(button => { const active = button.dataset.view === name; button.classList.toggle('active', active); if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current') }); document.querySelectorAll('.view').forEach(view => view.hidden = view.id !== `view-${name}`); closeDrawer(); if (name === 'history') loadHistory() }
+    navButtons.forEach(button => button.addEventListener('click', () => showView(button.dataset.view)));
+    document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => { showView(button.dataset.go); window.scrollTo({ top: 0, behavior: 'smooth' }) }));
+    function errorMessage(detail, status) { if (Array.isArray(detail)) return detail.map(item => item.msg || item.message || 'Invalid input').join('; '); if (typeof detail === 'string') return detail; if (detail && typeof detail === 'object') return JSON.stringify(detail); return `Request failed (${status})` }
+    async function api(path, options = {}, authToken = token) { const headers = { ...(options.headers || {}) }; if (authToken) headers.Authorization = `Bearer ${authToken}`; if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = 'application/json'; const response = await fetch(path, { ...options, headers }); let body = {}; try { body = await response.json() } catch { } if (!response.ok) { const error = new Error(errorMessage(body.detail, response.status)); error.status = response.status; throw error } return body }
+    function setError(id, message) { const box = $(id); box.textContent = message; box.classList.toggle('show', !!message) }
+    function formObject(form) { return Object.fromEntries(new FormData(form).entries()) }
+    function renderPlaceholder(node, icon, title, copy) { node.className = 'placeholder'; node.replaceChildren(); const symbol = document.createElement('div'); symbol.className = 'empty-icon'; symbol.textContent = icon; const heading = document.createElement('strong'); heading.textContent = title; const paragraph = document.createElement('p'); paragraph.textContent = copy; node.append(symbol, heading, paragraph) }
+    function clearHistory() { historyRequest++; $('historyRows').replaceChildren(); $('historyTableWrap').hidden = true }
+    function renderHistoryState(state, message = '') { const node = $('historyMessage'); node.className = 'placeholder history-state'; node.hidden = state === 'records'; node.replaceChildren(); if (state === 'records') return; node.hidden = false; if (state === 'loading') { node.className = 'history-loading'; const spinner = document.createElement('span'); spinner.className = 'spinner'; spinner.setAttribute('aria-hidden', 'true'); const text = document.createElement('span'); text.textContent = 'Loading your saved assessments…'; node.append(spinner, text); return } if (state === 'auth-check') { renderPlaceholder(node, '◷', 'Checking your sign-in', 'Your private history will load when the session check finishes.'); return } if (state === 'signed-out') { renderPlaceholder(node, '◷', 'Sign in to view your history', 'Your saved assessments are private to your account.'); const action = document.createElement('button'); action.type = 'button'; action.className = 'secondary'; action.textContent = 'Sign in'; action.addEventListener('click', () => { $('authDialog').showModal(); $('loginUser').focus() }); node.append(action); return } if (state === 'empty') { renderPlaceholder(node, '◷', 'No saved assessments yet', 'Your transaction and URL checks will appear here after you run them.'); const action = document.createElement('button'); action.type = 'button'; action.className = 'secondary'; action.textContent = 'Assess a transaction'; action.addEventListener('click', () => showView('transaction')); node.append(action); return } renderPlaceholder(node, '!', 'History could not be loaded', message || 'Check the connection and try refreshing.'); const retry = document.createElement('button'); retry.type = 'button'; retry.className = 'secondary'; retry.textContent = 'Try again'; retry.addEventListener('click', loadHistory); node.append(retry) }
+    function formatPercent(probability) { const value = probability * 100; if (value === 0) return '0.00'; if (value < 1e-7) return value.toExponential(3); const places = Math.min(10, Math.max(2, Math.ceil(-Math.log10(value)) + 2)); return value.toFixed(places) }
+    function historyAssessmentName(item) { if (item.kind === 'transaction') return 'Primary XGBoost model'; if (item.kind === 'gnn_transaction') return 'Experimental node-only GNN'; return 'URL indicators' }
+    function historyResultLabel(item) { if (item.kind === 'gnn_transaction') return item.decision === 'FRAUD' ? 'GNN flagged as fraud' : 'GNN did not flag as fraud'; if (item.kind === 'transaction') { if (item.decision === 'Potential fraud') return 'Flagged for review'; if (item.decision === 'Likely legitimate') return 'Not flagged by the model'; return 'Transaction assessed' } if (item.decision === 'high') return 'Warning signs found'; if (item.decision === 'review') return 'Warnings to review'; if (item.decision === 'no-listed-indicators') return 'No listed warning signs detected'; return 'URL check complete' }
+    const svgNS = 'http://www.w3.org/2000/svg';
+    function makeSvg(tag, attributes = {}) { const element = document.createElementNS(svgNS, tag); for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, String(value)); return element }
+    function scenarioEdges(data) { const groups = new Map(); for (const scenario of data.scenarios) { const tx = scenario.transaction, key = `${tx.nameOrig}\u0000${tx.nameDest}`; if (!groups.has(key)) groups.set(key, { source: tx.nameOrig, target: tx.nameDest, scenarios: [] }); groups.get(key).scenarios.push(scenario) } return [...groups.values()] }
+    function showDemoTransaction(scenario, data) { const panel = $('demoTransactionDetails'), tx = scenario.transaction; selectedDemoAccountId = null; document.querySelectorAll('.demo-node').forEach(node => { node.classList.remove('selected'); node.classList.remove('transaction-endpoint'); node.setAttribute('aria-pressed', 'false') }); document.querySelectorAll('.demo-node').forEach(node => { if (node.dataset.accountId === tx.nameOrig || node.dataset.accountId === tx.nameDest) node.classList.add('transaction-endpoint') }); document.querySelectorAll('.demo-edge').forEach(edge => { edge.classList.remove('connected'); edge.classList.toggle('selected', edge.dataset.source === tx.nameOrig && edge.dataset.target === tx.nameDest) }); document.querySelectorAll('#demoTransactionRows tr').forEach(row => { row.classList.remove('related', 'unrelated'); row.classList.toggle('selected', row.dataset.scenarioId === scenario.id) }); $('clearDemoSelection').disabled = false; $('demoGraphStatus').textContent = `Selected demonstration transaction: ${accountName(data, tx.nameOrig)} sent money to ${accountName(data, tx.nameDest)}.`; const accountPanel = $('demoAccountDetails'); accountPanel.replaceChildren(); const accountTitle = document.createElement('h3'); accountTitle.textContent = 'Transaction participants'; const sender = document.createElement('p'); sender.textContent = `Sender: ${accountName(data, tx.nameOrig)} (money sent)`; const recipient = document.createElement('p'); recipient.textContent = `Recipient: ${accountName(data, tx.nameDest)} (money received)`; accountPanel.append(accountTitle, sender, recipient); panel.replaceChildren(); const title = document.createElement('h3'); title.textContent = 'Transaction details'; const summary = document.createElement('p'); summary.textContent = `${accountName(data, tx.nameOrig)} sent money to ${accountName(data, tx.nameDest)} · ${scenario.title}`; const amount = document.createElement('p'); amount.textContent = `Amount: ${Number(tx.amount).toLocaleString(undefined, { maximumFractionDigits: 2 })} · Type: ${tx.type} · Time: step ${tx.step}`; const note = document.createElement('p'); note.className = 'hint'; note.textContent = scenario.description; panel.append(title, summary, amount, note) }
+    function accountName(data, id) { return data.accounts.find(account => account.id === id)?.name || id }
+    function renderDemoTable(data) { const root = $('demoTransactionRows'), empty = $('demoTransactionEmpty'); root.replaceChildren(); empty.hidden = data.scenarios.length > 0; empty.textContent = data.scenarios.length ? '' : 'No PaySim sample transaction rows are available.'; for (const scenario of data.scenarios) { const tx = scenario.transaction, row = document.createElement('tr'); row.tabIndex = 0; row.setAttribute('role', 'button'); row.dataset.scenarioId = scenario.id; row.setAttribute('aria-label', `${accountName(data, tx.nameOrig)} sent money to ${accountName(data, tx.nameDest)}, amount ${tx.amount}, step ${tx.step}; select transaction`); for (const [index, value] of [accountName(data, tx.nameOrig), accountName(data, tx.nameDest), Number(tx.amount).toLocaleString(undefined, { maximumFractionDigits: 2 }), `Step ${tx.step}`].entries()) { const cell = document.createElement('td'); if (index < 2) { const accountButton = document.createElement('button'); accountButton.type = 'button'; accountButton.className = 'account-link'; accountButton.textContent = value; accountButton.setAttribute('aria-label', `Select ${index === 0 ? 'sender' : 'recipient'} account ${value}`); accountButton.addEventListener('click', event => { event.stopPropagation(); inspectDemoAccount(index === 0 ? tx.nameOrig : tx.nameDest, data) }); cell.append(accountButton) } else cell.textContent = value; row.append(cell) } row.addEventListener('click', () => showDemoTransaction(scenario, data)); row.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); showDemoTransaction(scenario, data) } }); root.append(row) } }
+    function setDemoError(message) { $('demoGraphEdges').replaceChildren(); $('demoGraphNodes').replaceChildren(); $('demoTransactionRows').replaceChildren(); $('demoTransactionEmpty').hidden = false; $('demoTransactionEmpty').textContent = 'PaySim sample data could not be loaded.'; $('demoGraphStatus').textContent = message; $('demoGraphStatus').classList.add('error-text'); const panel = $('demoAccountDetails'); panel.replaceChildren(); const title = document.createElement('h3'); title.textContent = 'PaySim graph unavailable'; const copy = document.createElement('p'); copy.textContent = message; panel.append(title, copy) }
+    function renderDemoGraph(data) { const edgeRoot = $('demoGraphEdges'), nodeRoot = $('demoGraphNodes'), accounts = new Map(data.accounts.map(account => [account.id, account])), edges = scenarioEdges(data); edgeRoot.replaceChildren(); nodeRoot.replaceChildren(); for (const edge of edges) { const source = accounts.get(edge.source), target = accounts.get(edge.target); if (!source || !target) continue; const dx = target.x - source.x, dy = target.y - source.y, length = Math.hypot(dx, dy) || 1, sx = source.x + (dx / length) * 64, sy = source.y + (dy / length) * 28, ex = target.x - (dx / length) * 68, ey = target.y - (dy / length) * 31, mx = (sx + ex) / 2, my = (sy + ey) / 2; const path = makeSvg('path', { d: `M ${sx} ${sy} L ${ex} ${ey}`, class: 'demo-edge', tabindex: '0', role: 'button', 'aria-label': `${source.name} to ${target.name}, ${edge.scenarios.length} selected PaySim sample transactions; select a transaction`, 'data-source': edge.source, 'data-target': edge.target, 'marker-end': 'url(#demoArrow)' }); const title = makeSvg('title'); title.textContent = `${source.name} to ${target.name}: ${edge.scenarios.length} selected PaySim sample transaction(s)`; path.append(title); const show = () => showDemoTransaction(edge.scenarios[0], data); path.addEventListener('click', show); path.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); show() } }); edgeRoot.append(path); const label = makeSvg('text', { x: mx, y: my - 5, class: 'demo-edge-label', 'text-anchor': 'middle' }); label.textContent = `${edge.scenarios.length} txn${edge.scenarios.length === 1 ? '' : 's'}`; edgeRoot.append(label) } for (const account of data.accounts) { const node = makeSvg('g', { class: 'demo-node', tabindex: '0', role: 'button', 'data-account-id': account.id, 'aria-label': `${account.name}, select to inspect PaySim sample transactions`, 'aria-pressed': 'false' }); const rect = makeSvg('rect', { x: account.x - 62, y: account.y - 28, width: 124, height: 56, rx: 10 }); const name = makeSvg('text', { x: account.x, y: account.y - 3 }); name.textContent = account.name; const id = makeSvg('text', { x: account.x, y: account.y + 14, class: 'node-id' }); id.textContent = account.id; node.append(rect, name, id); node.addEventListener('click', () => inspectDemoAccount(account.id, data)); node.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); inspectDemoAccount(account.id, data) } }); nodeRoot.append(node) } renderDemoTable(data); $('demoGraphStatus').classList.remove('error-text'); $('demoGraphStatus').textContent = `Selected PaySim test-split sample: ${data.accounts.length} accounts · ${data.scenarios.length} transactions. Select an account in the graph or table to explore.`; $('clearDemoSelection').disabled = true; if (data.accounts.length) clearDemoSelection(); else { const panel = $('demoAccountDetails'); panel.replaceChildren(); const title = document.createElement('h3'); title.textContent = 'No sample accounts'; const copy = document.createElement('p'); copy.textContent = 'No sample account nodes are available in this dataset.'; panel.append(title, copy) } }
+    function formatDemoAmount(amount) { return Number(amount).toLocaleString(undefined, { maximumFractionDigits: 2 }) }
+    function renderDemoTransactionPrompt() { const panel = $('demoTransactionDetails'); panel.replaceChildren(); const title = document.createElement('h3'); title.textContent = 'Transaction details'; const copy = document.createElement('p'); copy.textContent = 'Select a transaction in the table or a connection line to see the details.'; panel.append(title, copy) }
+    function clearDemoSelection() { selectedDemoAccountId = null; document.querySelectorAll('.demo-node').forEach(node => { node.classList.remove('selected'); node.classList.remove('transaction-endpoint'); node.setAttribute('aria-pressed', 'false') }); document.querySelectorAll('.demo-edge').forEach(edge => { edge.classList.remove('connected'); edge.classList.remove('selected') }); document.querySelectorAll('#demoTransactionRows tr').forEach(row => { row.classList.remove('related'); row.classList.remove('unrelated'); row.classList.remove('selected') }); $('clearDemoSelection').disabled = true; if (researchDemoData?.accounts?.length) { const panel = $('demoAccountDetails'); panel.replaceChildren(); const title = document.createElement('h3'); title.textContent = 'Select an account'; const copy = document.createElement('p'); copy.textContent = 'Select an account in the graph or table to see its connections and amounts.'; panel.append(title, copy); $('demoGraphStatus').textContent = `Selected PaySim test-split sample: ${researchDemoData.accounts.length} accounts · ${researchDemoData.scenarios.length} transactions. Select an account in the graph or table to explore.` } renderDemoTransactionPrompt() }
+    function inspectDemoAccount(accountId, data) { const account = data.accounts.find(item => item.id === accountId); if (!account) { setDemoError('The selected demo account is unavailable.'); return } selectedDemoAccountId = accountId; document.querySelectorAll('.demo-node').forEach(node => { const selected = node.dataset.accountId === accountId; node.classList.toggle('selected', selected); node.classList.remove('transaction-endpoint'); node.setAttribute('aria-pressed', selected ? 'true' : 'false') }); document.querySelectorAll('.demo-edge').forEach(edge => { edge.classList.remove('selected'); edge.classList.toggle('connected', edge.dataset.source === accountId || edge.dataset.target === accountId) }); const outgoing = new Map(), incoming = new Map(); let outgoingAmount = 0, incomingAmount = 0; for (const scenario of data.scenarios) { const tx = scenario.transaction; if (tx.nameOrig === accountId) { outgoing.set(tx.nameDest, (outgoing.get(tx.nameDest) || 0) + 1); outgoingAmount += Number(tx.amount) } if (tx.nameDest === accountId) { incoming.set(tx.nameOrig, (incoming.get(tx.nameOrig) || 0) + 1); incomingAmount += Number(tx.amount) } } const neighbors = new Set([...outgoing.keys(), ...incoming.keys()]), outCount = [...outgoing.values()].reduce((a, b) => a + b, 0), inCount = [...incoming.values()].reduce((a, b) => a + b, 0); document.querySelectorAll('#demoTransactionRows tr').forEach(row => { const scenario = data.scenarios.find(item => item.id === row.dataset.scenarioId), tx = scenario?.transaction, related = tx && (tx.nameOrig === accountId || tx.nameDest === accountId); row.classList.toggle('related', !!related); row.classList.toggle('unrelated', !related); row.classList.remove('selected') }); $('clearDemoSelection').disabled = false; const panel = $('demoAccountDetails'); panel.replaceChildren(); const title = document.createElement('h3'); title.textContent = account.name; const id = document.createElement('p'); id.className = 'hint'; id.textContent = account.id; const connected = document.createElement('p'); connected.textContent = `Connected accounts: ${neighbors.size}`; const incomingSummary = document.createElement('p'); incomingSummary.textContent = `Incoming (money received): ${inCount} transaction${inCount === 1 ? '' : 's'} · total amount ${formatDemoAmount(incomingAmount)}`; const outgoingSummary = document.createElement('p'); outgoingSummary.textContent = `Outgoing (money sent): ${outCount} transaction${outCount === 1 ? '' : 's'} · total amount ${formatDemoAmount(outgoingAmount)}`; panel.append(title, id, connected, incomingSummary, outgoingSummary); const list = document.createElement('ul'); for (const [connectedId, count] of outgoing) { const li = document.createElement('li'); li.textContent = `Money sent to ${accountName(data, connectedId)}: ${count} sample transaction${count === 1 ? '' : 's'}`; list.append(li) } for (const [connectedId, count] of incoming) { const li = document.createElement('li'); li.textContent = `Money received from ${accountName(data, connectedId)}: ${count} sample transaction${count === 1 ? '' : 's'}`; list.append(li) } if (!neighbors.size) { const empty = document.createElement('li'); empty.textContent = 'No connected sample transactions for this account.'; list.append(empty) } panel.append(list); const relatedCount = inCount + outCount; $('demoGraphStatus').textContent = `Selected ${account.name}. Highlighted ${relatedCount} related sample transaction${relatedCount === 1 ? '' : 's'} in the table.`; renderDemoTransactionPrompt() }
+    async function loadResearchDemo() { const select = $('demoScenario'), button = $('loadDemoScenario'), status = $('demoDataStatus'); try { const response = await fetch('/static/paysim_network_sample.json'); if (!response.ok) throw new Error(`PaySim network sample request failed (${response.status}).`); const raw = await response.json(); if (!Array.isArray(raw.accounts) || !Array.isArray(raw.transactions)) throw new Error('PaySim network sample format is invalid.'); const data = { datasetName: raw.dataset_name, sampleNote: raw.sample_note, accounts: raw.accounts.map(a => ({ ...a, name: a.id })), scenarios: raw.transactions.map(tx => ({ id: tx.id, title: `${tx.type} · step ${tx.step} · ${Number(tx.amount).toLocaleString(undefined, { maximumFractionDigits: 2 })}`, description: `Selected chronological PaySim test-split row ${tx.split_row_index}. Synthetic ground-truth label: ${tx.isFraud ? 'fraud' : 'not fraud'}.`, transaction: { step: tx.step, type: tx.type, amount: tx.amount, oldbalanceOrg: tx.oldbalanceOrg, newbalanceOrig: tx.newbalanceOrig, oldbalanceDest: tx.oldbalanceDest, newbalanceDest: tx.newbalanceDest, nameOrig: tx.nameOrig, nameDest: tx.nameDest } })) }; if (data.accounts.some(a => !a.id || !Number.isFinite(Number(a.x)) || !Number.isFinite(Number(a.y)))) throw new Error('PaySim account data is incomplete.'); const accountIds = new Set(data.accounts.map(a => a.id)); if (data.scenarios.some(item => !item.id || !item.transaction || !accountIds.has(item.transaction.nameOrig) || !accountIds.has(item.transaction.nameDest) || !Number.isFinite(Number(item.transaction.amount)) || !Number.isFinite(Number(item.transaction.step)))) throw new Error('PaySim transaction data is incomplete.'); researchDemoData = data; selectedDemoAccountId = null; select.replaceChildren(); for (const scenario of data.scenarios) { const option = document.createElement('option'); option.value = scenario.id; option.textContent = scenario.title; select.append(option) } select.disabled = !data.scenarios.length; button.disabled = !data.scenarios.length; status.textContent = data.scenarios.length ? 'Genuine synthetic PaySim test-split sample loaded.' : 'No PaySim transactions are available.'; status.classList.toggle('error-text', !data.accounts.length && !data.scenarios.length); renderDemoGraph(data); $('demoGraphStatus').textContent = `${raw.dataset_name}: ${data.accounts.length} accounts · ${data.scenarios.length} selected transactions. ${raw.sample_note}`; } catch (error) { status.textContent = error.message; status.classList.add('error-text'); setDemoError(error.message) } }
+    function renderLabelledExampleStatus() { const label = $('paysimGroundTruth'), comparison = $('paysimModelComparison'); if (!selectedLabelledPaySimExample) { label.textContent = 'Known PaySim label: select a labelled example.'; comparison.textContent = 'Run XGBoost and the experimental node-only GNN independently to compare their predictions with the known label.'; return } const target = selectedLabelledPaySimExample.ground_truth; label.textContent = `Known dataset label (isFraud): ${target ? 'FRAUD' : 'NOT FRAUD'} · ${selectedLabelledPaySimExample.id} · chronological test split`; const lines = ['Each result below describes this example only, not model accuracy.']; for (const name of ['xgboost', 'gnn']) { if (!(name in labelledModelPredictions)) continue; const predicted = labelledModelPredictions[name], modelName = name === 'xgboost' ? 'XGBoost' : 'Experimental node-only GNN', outcome = predicted === Boolean(target) ? 'Correct for this sample.' : `Mismatch for this sample; known label is ${target ? 'FRAUD' : 'NOT FRAUD'}.`; lines.push(`${modelName}: predicted ${predicted ? 'FRAUD' : 'NOT FRAUD'}. ${outcome}`) } comparison.textContent = lines.join(' ') }
+    function recordLabelledPrediction(model, isFraud, exampleId) { if (!selectedLabelledPaySimExample || selectedLabelledPaySimExample.id !== exampleId) return; labelledModelPredictions[model] = Boolean(isFraud); renderLabelledExampleStatus() }
+    function clearLabelledExample(message = 'Transaction changed; the loaded PaySim ground-truth label no longer applies.') { if (!selectedLabelledPaySimExample) return; selectedLabelledPaySimExample = null; labelledModelPredictions = {}; $('paysimExampleStatus').textContent = message; renderLabelledExampleStatus() }
+    async function loadLabelledPaySimExamples() { const select = $('paysimExample'), button = $('loadPaySimExample'), status = $('paysimExampleStatus'); try { const response = await fetch('/static/paysim_labelled_examples.json'); if (!response.ok) throw new Error(`PaySim examples request failed (${response.status}).`); const data = await response.json(); const required = ['step', 'type', 'amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest']; if (!Array.isArray(data.examples) || data.examples.length === 0) throw new Error('Labelled PaySim example set is empty.'); if (data.examples.some(example => !example.id || ![0, 1].includes(example.ground_truth) || !example.transaction || required.some(field => !(field in example.transaction)) || 'isFraud' in example.transaction || 'ground_truth' in example.transaction)) throw new Error('A labelled example is incomplete or contains a target in its model fields.'); labelledPaySimData = data; select.replaceChildren(); for (const example of data.examples) { const option = document.createElement('option'); option.value = example.id; option.textContent = `${example.id} · step ${example.transaction.step}`; select.append(option) } select.disabled = false; button.disabled = false; status.textContent = `${data.examples.length} labelled examples ready from the chronological test split.` } catch (error) { status.textContent = error.message; status.classList.add('error-text') } }
+    $('loadPaySimExample').addEventListener('click', () => { if (!labelledPaySimData) return; const example = labelledPaySimData.examples.find(item => item.id === $('paysimExample').value); if (!example) return; selectedLabelledPaySimExample = example; labelledModelPredictions = {}; for (const [key, value] of Object.entries(example.transaction)) $('transactionForm').elements[key].value = value; $('transactionForm').elements.nameOrig.value = ''; $('transactionForm').elements.nameDest.value = ''; $('paysimExampleStatus').textContent = 'Loaded actual test-split feature values. Ground truth stays separate from model inputs.'; setError('transactionError', ''); setError('gnnError', ''); renderLabelledExampleStatus(); showView('transaction') });
+    const demoFeatureNames = ['type', 'step', 'amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest']; $('transactionForm').addEventListener('input', event => { if (demoFeatureNames.includes(event.target.name)) clearLabelledExample() }); $('transactionForm').addEventListener('change', event => { if (demoFeatureNames.includes(event.target.name)) clearLabelledExample() });
+    $('loadDemoScenario').addEventListener('click', () => { if (!researchDemoData) return; const scenario = researchDemoData.scenarios.find(item => item.id === $('demoScenario').value); if (!scenario) return; clearLabelledExample('PaySim sample transaction loaded; its synthetic label is shown separately.'); for (const [key, value] of Object.entries(scenario.transaction)) $('transactionForm').elements[key].value = value; setError('transactionError', ''); $('demoDataStatus').textContent = `Loaded “${scenario.title}”. Submit the form for the live model output.`; showView('transaction') });
+    function authChanged() { $('identityLabel').textContent = username ? `Signed in · ${username}` : 'Guest session'; $('signedOutActions').hidden = !!username; $('signedInActions').hidden = !username; $('authForms').hidden = !!username; $('signedInPanel').hidden = !username; if (username && $('authDialog').open) $('authDialog').close(); clearHistory(); renderPlaceholder($('graphResult'), '◇', username ? 'Ready to inspect saved relationships' : 'Sign in to use graph history', username ? 'Enter account IDs from your own saved assessments to summarize your private history.' : 'Sign in to view your private saved activity.'); if (!username) { renderHistoryState('signed-out') } else if (document.getElementById('view-history').hidden === false) { loadHistory() } }
+    async function checkHealth() { try { const response = await fetch('/api/health'); const data = await response.json(); if (response.ok && data.model_loaded) { $('healthDot').className = 'dot online'; $('healthText').textContent = 'Service online' } else throw new Error('Service unavailable') } catch { $('healthDot').className = 'dot offline'; $('healthText').textContent = 'Service unavailable' } }
+    async function authenticate(path, form) { setError('authError', ''); try { const data = await api(path, { method: 'POST', body: JSON.stringify(formObject(form)) }, null); token = data.access_token; username = data.username; authReady = true; localStorage.setItem(tokenKey, token); form.reset(); authChanged() } catch (error) { setError('authError', error.message) } }
+    $('menuButton').addEventListener('click', openDrawer); $('drawerClose').addEventListener('click', closeDrawer); $('drawerBackdrop').addEventListener('click', closeDrawer); document.addEventListener('keydown', event => { if (event.key === 'Escape' && $('navigationDrawer').getAttribute('aria-hidden') === 'false') closeDrawer() });
+    function openDrawer() { const drawer = $('navigationDrawer'), backdrop = $('drawerBackdrop'); drawer.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); backdrop.hidden = false; requestAnimationFrame(() => backdrop.classList.add('open')); $('menuButton').setAttribute('aria-expanded', 'true'); $('drawerClose').focus() }
+    function closeDrawer() { const drawer = $('navigationDrawer'), backdrop = $('drawerBackdrop'); if (drawer.getAttribute('aria-hidden') === 'true') return; drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); backdrop.classList.remove('open'); $('menuButton').setAttribute('aria-expanded', 'false'); window.setTimeout(() => { if (drawer.getAttribute('aria-hidden') === 'true') backdrop.hidden = true }, 200); $('menuButton').focus() }
+    $('openLogin').addEventListener('click', () => { $('authDialog').showModal(); $('loginUser').focus() }); $('openRegister').addEventListener('click', () => { $('authDialog').showModal(); $('registerUser').focus() }); $('closeAuth').addEventListener('click', () => $('authDialog').close()); $('authDialog').addEventListener('click', event => { if (event.target === $('authDialog')) $('authDialog').close() });
+    $('loginForm').addEventListener('submit', event => { event.preventDefault(); if (event.currentTarget.reportValidity()) authenticate('/api/auth/login', event.currentTarget) });
+    $('registerForm').addEventListener('submit', event => { event.preventDefault(); if (event.currentTarget.reportValidity()) authenticate('/api/auth/register', event.currentTarget) });
+    $('signOutButton').addEventListener('click', () => { const signingOutToken = token; token = null; username = null; authReady = true; localStorage.removeItem(tokenKey); authChanged(); api('/api/auth/logout', { method: 'POST' }, signingOutToken).catch(() => { }) });
+    function startSession() { if (!token) { authReady = true; authChanged(); return } authReady = false; const checkingToken = token; api('/api/auth/me', {}, checkingToken).then(data => { if (token !== checkingToken) return; username = data.username; authReady = true; authChanged() }).catch(() => { if (token !== checkingToken) return; token = null; username = null; authReady = true; localStorage.removeItem(tokenKey); authChanged() }) }
+    let paySimNetworkSample = null;
+    async function loadPaySimNetworkSample() {
+      const result = $('paysimGraphResult');
+      try {
+        const response = await fetch('/static/paysim_network_sample.json');
+        if (!response.ok) throw new Error(`PaySim sample request failed (${response.status}).`);
+        const data = await response.json();
+        if (!Array.isArray(data.accounts) || !Array.isArray(data.transactions)) throw new Error('PaySim sample format is invalid.');
+        paySimNetworkSample = data;
+        const list = $('paysimAccountIds'); list.replaceChildren();
+        for (const account of data.accounts) { const option = document.createElement('option'); option.value = account.id; list.append(option); }
+        const note = document.createElement('p'); note.textContent = `Loaded ${data.transactions.length} sample transactions from test steps ${data.step_range[0]}–${data.step_range[1]}.`;
+        result.replaceChildren(); const title = document.createElement('strong'); title.textContent = 'PaySim sample loaded'; result.append(title, note);
+      } catch (error) { renderPlaceholder(result, '!', 'PaySim sample unavailable', error.message); }
+    }
+    $('paysimGraphForm').addEventListener('submit', event => {
+      event.preventDefault(); if (!paySimNetworkSample) { renderPlaceholder($('paysimGraphResult'), '!', 'Sample not loaded', 'Refresh the page and try again.'); return; }
+      const source = $('paysimGraphSource').value.trim(), target = $('paysimGraphTarget').value.trim(), txs = paySimNetworkSample.transactions;
+      const known = new Set(paySimNetworkSample.accounts.map(a => a.id)); const result = $('paysimGraphResult'); result.className = 'relationship-output'; result.replaceChildren();
+      const title = document.createElement('strong'); title.textContent = `${source} → ${target}`; result.append(title);
+      if (!known.has(source) || !known.has(target)) { const msg = document.createElement('p'); msg.textContent = 'One or both IDs are not in this selected three-transaction sample. Choose IDs from the list; this is not a full-dataset search.'; result.append(msg); return; }
+      const outgoing = txs.filter(t => t.nameOrig === source).length, incoming = txs.filter(t => t.nameDest === source).length;
+      const targetOutgoing = txs.filter(t => t.nameOrig === target).length, targetIncoming = txs.filter(t => t.nameDest === target).length;
+      const pair = txs.filter(t => t.nameOrig === source && t.nameDest === target);
+      const reverse = txs.filter(t => t.nameOrig === target && t.nameDest === source);
+      const shared = [...known].filter(id => id !== source && id !== target && ((txs.some(t => t.nameOrig === source && t.nameDest === id) || txs.some(t => t.nameDest === source && t.nameOrig === id)) && (txs.some(t => t.nameOrig === target && t.nameDest === id) || txs.some(t => t.nameDest === target && t.nameOrig === id))));
+      const lines = [
+        `Sender ${source}: ${outgoing} outgoing and ${incoming} incoming transaction(s) in this sample.`,
+        `Recipient ${target}: ${targetOutgoing} outgoing and ${targetIncoming} incoming transaction(s) in this sample.`,
+        `Transfers from ${source} to ${target}: ${pair.length}. Reverse transfers: ${reverse.length}.`,
+        `Shared connected account(s) in this sample: ${shared.length}${shared.length ? ` (${shared.join(', ')})` : ''}.`
+      ];
+      const list = document.createElement('ul'); for (const line of lines) { const item = document.createElement('li'); item.textContent = line; list.append(item); } result.append(list);
+      const note = document.createElement('p'); note.className = 'explanation'; note.textContent = `Scope: ${paySimNetworkSample.transactions.length} selected test-split transactions only (steps ${paySimNetworkSample.step_range[0]}–${paySimNetworkSample.step_range[1]}). These are synthetic PaySim records, not a complete account history or live bank data.`; result.append(note);
+    });
+    startSession(); checkHealth(); loadResearchDemo(); loadPaySimNetworkSample(); loadLabelledPaySimExamples(); $('clearDemoSelection').addEventListener('click', clearDemoSelection);
+
+    $('exampleButton').addEventListener('click', () => { clearLabelledExample('Basic fictional example loaded; no PaySim ground-truth label applies.'); const example = { type: 'CASH_OUT', step: 500, amount: 25000, oldbalanceOrg: 30000, newbalanceOrig: 5000, oldbalanceDest: 1000, newbalanceDest: 26000 }; for (const [key, value] of Object.entries(example)) $('transactionForm').elements[key].value = value; setError('transactionError', '') });
+    function renderTransactionResult(data) { const flagged = Boolean(data.is_fraud), node = $('transactionResult'); node.className = 'transaction-result'; node.replaceChildren(); const label = document.createElement('div'); label.className = 'score-label'; label.textContent = 'Model assessment'; const risk = document.createElement('div'); risk.className = `result-decision ${flagged ? 'flagged' : 'not-flagged'}`; risk.textContent = flagged ? 'Flagged for review' : 'Low predicted risk'; const decision = document.createElement('p'); decision.className = 'actual-decision'; decision.textContent = `Decision: ${flagged ? 'Flagged for review' : 'Not flagged by the model'}`; const explanation = document.createElement('p'); explanation.className = 'explanation'; explanation.textContent = flagged ? 'The model flagged this transaction based on patterns it learned; this is not proof of fraud.' : 'The model did not flag this transaction based on the patterns it learned. This does not guarantee that the transaction is safe.'; const details = document.createElement('details'); details.className = 'model-details'; const summary = document.createElement('summary'); summary.textContent = 'Model details'; const list = document.createElement('dl'); const scoreLabel = document.createElement('dt'); scoreLabel.textContent = 'Raw XGBoost model output'; const scoreValue = document.createElement('dd'); scoreValue.textContent = String(data.fraud_probability); const thresholdLabel = document.createElement('dt'); thresholdLabel.textContent = 'Review decision cutoff'; const thresholdValue = document.createElement('dd'); thresholdValue.textContent = String(data.threshold); const calibrationLabel = document.createElement('dt'); calibrationLabel.textContent = 'Calibration'; const calibrationValue = document.createElement('dd'); calibrationValue.textContent = 'Not evaluated; this is not an estimated fraud likelihood.'; const labelBasis = document.createElement('dt'); labelBasis.textContent = 'Meaning of “Low predicted risk”'; const labelBasisValue = document.createElement('dd'); labelBasisValue.textContent = 'This presentation label means only that the score fell below the existing decision cutoff. It is not a calibrated or verified real-world risk level.'; list.append(scoreLabel, scoreValue, thresholdLabel, thresholdValue, calibrationLabel, calibrationValue, labelBasis, labelBasisValue); details.append(summary, list); node.append(label, risk, decision, explanation, details) }
+    $('transactionForm').addEventListener('submit', async event => { event.preventDefault(); const form = event.currentTarget; if (!form.reportValidity()) return; setError('transactionError', ''); const labelledExampleId = selectedLabelledPaySimExample?.id || null, raw = formObject(form), payload = { type: raw.type }; for (const name of ['step', 'amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest']) payload[name] = Number(raw[name]); if (raw.nameOrig.trim()) payload.nameOrig = raw.nameOrig.trim(); if (raw.nameDest.trim()) payload.nameDest = raw.nameDest.trim(); const button = $('submitButton'); button.disabled = true; button.textContent = 'Scoring…'; renderPlaceholder($('transactionResult'), '…', 'Scoring transaction', 'Waiting for the saved model.'); try { const data = await api('/api/predict', { method: 'POST', body: JSON.stringify(payload) }); renderTransactionResult(data); recordLabelledPrediction('xgboost', data.is_fraud, labelledExampleId); if (!token) setError('transactionError', 'Prediction complete. Sign in on Overview to save it to your private history.'); else setError('transactionError', '') } catch (error) { renderPlaceholder($('transactionResult'), '!', 'Assessment unavailable', 'Check the API connection and try again.'); setError('transactionError', error.message) } finally { button.disabled = false; button.textContent = 'Assess transaction' } });
+
+    $('graphForm').addEventListener('submit', async event => { event.preventDefault(); const form = event.currentTarget; if (!form.reportValidity()) return; setError('graphError', ''); const requestToken = token; try { const data = await api('/api/graph/analyze', { method: 'POST', body: JSON.stringify(formObject(form)) }, requestToken); if (token !== requestToken) return; const node = $('graphResult'); node.className = ''; node.replaceChildren(); const heading = document.createElement('strong'); heading.textContent = `${data.source_account} → ${data.target_account}`; const detail = document.createElement('p'); const m = data.metrics; detail.textContent = `In your saved assessments: the sender appears ${m.source_outgoing} time(s), the recipient appears ${m.target_incoming} time(s), transactions between these accounts appear ${m.repeated_pair} time(s), and ${m.shared_neighbors} account(s) are connected to both.`; const note = document.createElement('p'); note.className = 'explanation'; note.textContent = data.explanation; node.append(heading, detail, note) } catch (error) { if (token !== requestToken) return; renderPlaceholder($('graphResult'), '◇', 'Graph summary unavailable', 'Check your sign-in and saved assessment history, then try again.'); setError('graphError', error.message) } });
+
+    function urlRiskLabel(level) { if (level === 'high') return 'Warning signs found'; if (level === 'review') return 'Warning signs to review'; if (level === 'no-listed-indicators') return 'No listed warning signs detected'; return 'URL check complete' }
+    function renderUrlAnalysis(data, decodedContent = null, message = '', detectedFormat = 'website_url', riskAssessment = null) { const node = $('urlResult'); node.className = ''; node.replaceChildren(); if (decodedContent !== null) { const decodedLabel = document.createElement('strong'); decodedLabel.textContent = 'Decoded QR content'; const decoded = document.createElement('p'); decoded.className = 'decoded-content'; decoded.textContent = decodedContent; node.append(decodedLabel, decoded) } const format = document.createElement('p'); format.textContent = `Detected format: ${detectedFormat === 'website_url' ? 'Website URL' : detectedFormat}`; node.append(format); if (message) { const status = document.createElement('p'); status.className = 'explanation'; status.textContent = message; node.append(status) } const assessment = riskAssessment || { status: 'assessed', level: data.risk_level, label: urlRiskLabel(data.risk_level), warning_signs: data.indicators, explanation: data.explanation }; const title = document.createElement('strong'); title.textContent = `Risk assessment: ${assessment.label}`; node.append(title); if (data.hostname) { const host = document.createElement('p'); host.textContent = `Hostname: ${data.hostname}`; node.append(host) } const warnings = assessment.warning_signs || []; if (assessment.status === 'assessed') { const list = document.createElement('ul'); list.className = 'risk-list'; if (warnings.length) { for (const indicator of warnings) { const item = document.createElement('li'); item.className = indicator.severity; item.textContent = indicator.message; list.append(item) } } else { const item = document.createElement('li'); item.className = 'clear'; item.textContent = 'No listed warning signs detected. This does not mean the URL is safe.'; list.append(item) } node.append(list) } const disclaimer = document.createElement('p'); disclaimer.className = 'explanation'; disclaimer.textContent = assessment.explanation || data.explanation; node.append(disclaimer) }
+    function renderQrScanResult(data) { const format = data.detected_format || 'plain_text'; if (format === 'website_url') { renderUrlAnalysis(data.url_analysis, data.decoded_content, data.message, format, data.risk_assessment); return } const node = $('urlResult'); node.className = ''; node.replaceChildren(); const decodedLabel = document.createElement('strong'); decodedLabel.textContent = format === 'upi_payment_uri' ? 'UPI payment URI decoded' : format === 'plain_text' ? 'QR contains plain text' : 'Decoded URI'; const decoded = document.createElement('pre'); decoded.className = 'decoded-content'; decoded.textContent = data.decoded_content; const formatLine = document.createElement('p'); const formatNames = { upi_payment_uri: 'UPI payment URI', other_uri: 'Other URI', plain_text: 'Plain text' }; formatLine.textContent = `Detected format: ${formatNames[format] || format}`; const risk = data.risk_assessment || { label: 'Not assessed', explanation: 'No website URL assessment was performed.' }; const riskLine = document.createElement('strong'); riskLine.textContent = `Risk assessment: ${risk.label}`; node.append(decodedLabel, decoded, formatLine, riskLine); if (format === 'upi_payment_uri' && Array.isArray(data.upi_fields)) { const fieldHeading = document.createElement('p'); fieldHeading.textContent = 'Fields present in this URI:'; const fields = document.createElement('ul'); for (const field of data.upi_fields) { const item = document.createElement('li'); item.textContent = `${field.label}: ${field.value}`; fields.append(item) } if (data.upi_fields.length) node.append(fieldHeading, fields) } if (data.message) { const message = document.createElement('p'); message.className = 'explanation'; message.textContent = data.message; node.append(message) } const explanation = document.createElement('p'); explanation.className = 'explanation'; explanation.textContent = risk.explanation; node.append(explanation) }
+    $('urlForm').addEventListener('submit', async event => { event.preventDefault(); const form = event.currentTarget; if (!form.reportValidity()) return; setError('urlError', ''); setError('qrError', ''); try { const data = await api('/api/url/check', { method: 'POST', body: JSON.stringify(formObject(form)) }); renderUrlAnalysis(data) } catch (error) { renderPlaceholder($('urlResult'), '!', 'URL check unavailable', 'Correct the URL format and try again.'); setError('urlError', error.message) } });
+    $('qrForm').addEventListener('submit', async event => { event.preventDefault(); const form = event.currentTarget; if (!form.reportValidity()) return; setError('qrError', ''); setError('urlError', ''); const button = $('qrSubmit'), formData = new FormData(form); button.disabled = true; button.textContent = 'Decoding…'; renderPlaceholder($('urlResult'), '…', 'Reading QR image', 'The image is processed locally; no decoded URL is opened.'); try { const data = await api('/api/url/scan-qr', { method: 'POST', body: formData }); renderQrScanResult(data) } catch (error) { renderPlaceholder($('urlResult'), '!', 'QR image could not be checked', error.message); setError('qrError', error.message) } finally { button.disabled = false; button.textContent = 'Decode and check QR' } });
+
+    async function loadHistory() { if (!token) { clearHistory(); renderHistoryState(authReady ? 'signed-out' : 'auth-check'); return } if (!authReady || !username) { renderHistoryState('auth-check'); return } const request = ++historyRequest, requestToken = token, requestUser = username; $('historyTableWrap').hidden = true; $('historyRows').replaceChildren(); renderHistoryState('loading'); try { const data = await api('/api/history', {}, requestToken); if (request !== historyRequest || token !== requestToken || username !== requestUser) return; if (!Array.isArray(data.assessments)) throw new Error('The history response did not contain an assessment list.'); const rows = $('historyRows'); rows.replaceChildren(); if (!data.assessments.length) { $('historyTableWrap').hidden = true; renderHistoryState('empty'); return } for (const item of data.assessments) { const row = document.createElement('tr'); const time = document.createElement('td'); time.textContent = new Date(item.created_at).toLocaleString(); const kind = document.createElement('td'); kind.textContent = historyAssessmentName(item); const decision = document.createElement('td'); decision.textContent = historyResultLabel(item); const score = document.createElement('td'); score.textContent = item.score === null ? 'No model score' : `${formatPercent(item.score)}%`; score.title = item.score === null ? 'URL checks use local indicators and do not produce a model score.' : 'Displayed as raw model output × 100; not calibrated as a real-world fraud probability.'; row.append(time, kind, decision, score); rows.append(row) } $('historyTableWrap').hidden = false; renderHistoryState('records') } catch (error) { if (request !== historyRequest || token !== requestToken || username !== requestUser) return; $('historyRows').replaceChildren(); $('historyTableWrap').hidden = true; renderHistoryState('error', error.status === 401 ? 'Your session expired. Sign in again to load history.' : error.message) } }
+    $('refreshHistory').addEventListener('click', loadHistory);
+    function renderGNNResult(data) { const flagged = data.decision === 'FRAUD', node = $('gnnResult'); node.className = 'transaction-result'; node.replaceChildren(); const label = document.createElement('div'); label.className = 'score-label'; label.textContent = 'Experimental node-feature-only GNN · not graph-enabled'; const decision = document.createElement('div'); decision.className = `result-decision ${flagged ? 'flagged' : 'not-flagged'}`; decision.textContent = data.decision; const note = document.createElement('p'); note.className = 'explanation'; note.textContent = 'Experimental node-only result. It does not use account graph history and does not replace the primary XGBoost assessment.'; const details = document.createElement('details'); details.className = 'model-details'; const summary = document.createElement('summary'); summary.textContent = 'Experimental model details'; const list = document.createElement('dl'); const scoreLabel = document.createElement('dt'); scoreLabel.textContent = 'Raw GNN model score'; const scoreValue = document.createElement('dd'); scoreValue.textContent = String(data.raw_score); const thresholdLabel = document.createElement('dt'); thresholdLabel.textContent = 'Validation-selected decision threshold'; const thresholdValue = document.createElement('dd'); thresholdValue.textContent = String(data.threshold); const calibrationLabel = document.createElement('dt'); calibrationLabel.textContent = 'Score interpretation'; const calibrationValue = document.createElement('dd'); calibrationValue.textContent = 'Not calibrated as a real-world fraud probability.'; list.append(scoreLabel, scoreValue, thresholdLabel, thresholdValue, calibrationLabel, calibrationValue); details.append(summary, list); node.append(label, decision, note, details) }
+    $('gnnSubmitButton').addEventListener('click', async () => { const form = $('transactionForm'); if (!form.reportValidity()) return; setError('gnnError', ''); if (!token) { renderPlaceholder($('gnnResult'), '!', 'Sign in required', 'The experimental GNN assessment requires an authenticated account.'); setError('gnnError', 'Sign in on Overview before running the experimental GNN.'); return } const labelledExampleId = selectedLabelledPaySimExample?.id || null, raw = formObject(form), payload = { type: raw.type }; for (const name of ['step', 'amount', 'oldbalanceOrg', 'newbalanceOrig', 'oldbalanceDest', 'newbalanceDest']) payload[name] = Number(raw[name]); if (raw.nameOrig.trim()) payload.nameOrig = raw.nameOrig.trim(); if (raw.nameDest.trim()) payload.nameDest = raw.nameDest.trim(); const requestToken = token, button = $('gnnSubmitButton'); button.disabled = true; button.textContent = 'Running experiment…'; renderPlaceholder($('gnnResult'), '…', 'Running node-only GNN', 'This is a separate experimental assessment.'); try { const data = await api('/api/predict/gnn', { method: 'POST', body: JSON.stringify(payload) }, requestToken); if (token !== requestToken) return; renderGNNResult(data); recordLabelledPrediction('gnn', data.is_fraud, labelledExampleId) } catch (error) { if (token !== requestToken) return; renderPlaceholder($('gnnResult'), '!', error.status === 401 ? 'Sign in required' : error.status === 503 ? 'GNN model unavailable' : 'GNN assessment failed', `${error.message} The primary XGBoost assessment remains available.`); setError('gnnError', error.message) } finally { button.disabled = false; button.textContent = 'Assess with experimental GNN' } });
+    renderTransactionResult = function renderPrimaryXGBoostResult(data) {
+      const flagged = Boolean(data.is_fraud), node = $('transactionResult');
+      node.className = 'transaction-result';
+      node.replaceChildren();
+      const label = document.createElement('div');
+      label.className = 'score-label';
+      label.textContent = 'Primary model · XGBoost';
+      const decision = document.createElement('div');
+      decision.className = `result-decision ${flagged ? 'flagged' : 'not-flagged'}`;
+      decision.textContent = flagged ? 'FRAUD' : 'NOT FRAUD';
+      const explanation = document.createElement('p');
+      explanation.className = 'explanation';
+      explanation.textContent = flagged
+        ? `XGBoost flagged this record at the saved ${data.threshold} threshold. This model decision is not proof of fraud.`
+        : `XGBoost did not flag this record at the saved ${data.threshold} threshold. This does not establish that it is fraud-free.`;
+      const details = document.createElement('details');
+      details.className = 'model-details';
+      const summary = document.createElement('summary');
+      summary.textContent = 'Model details';
+      const list = document.createElement('dl');
+      for (const [heading, value] of [
+        ['Raw XGBoost model output', data.fraud_probability],
+        ['Saved decision threshold', data.threshold],
+        ['Score interpretation', 'Not calibrated as a real-world fraud probability.'],
+      ]) {
+        const term = document.createElement('dt');
+        term.textContent = heading;
+        const detail = document.createElement('dd');
+        detail.textContent = String(value);
+        list.append(term, detail);
+      }
+      details.append(summary, list);
+      node.append(label, decision, explanation, details);
+    };
+  </script>
+</body>
+
+</html>

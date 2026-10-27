@@ -1,0 +1,230 @@
+{
+  "training_seconds": 35.06069159996696,
+  "selected_epoch": 18,
+  "best_validation_average_precision": 0.7126157759576838,
+  "validation_metrics_at_selected_threshold": {
+    "threshold": 0.9023056626319885,
+    "precision": 0.7748538011695907,
+    "recall": 0.6812339331619537,
+    "f1": 0.7250341997264022,
+    "average_precision": 0.7126157759576838,
+    "confusion_matrix": [
+      [
+        242466,
+        308
+      ],
+      [
+        496,
+        1060
+      ]
+    ]
+  },
+  "test_metrics": {
+    "threshold": 0.9023056626319885,
+    "precision": 0.9020912547528517,
+    "recall": 0.593125,
+    "f1": 0.7156862745098039,
+    "average_precision": 0.7551483222486404,
+    "confusion_matrix": [
+      [
+        101870,
+        103
+      ],
+      [
+        651,
+        949
+      ]
+    ]
+  },
+  "epoch_history": [
+    {
+      "epoch": 1,
+      "loss": 0.60286945104599,
+      "pr_auc": 0.005119055509567261,
+      "val_loss": 0.3774924576282501,
+      "val_pr_auc": 0.19853170216083527,
+      "val_average_precision": 0.19863528270130573
+    },
+    {
+      "epoch": 2,
+      "loss": 0.3959077298641205,
+      "pr_auc": 0.04302282631397247,
+      "val_loss": 0.35006657242774963,
+      "val_pr_auc": 0.25612735748291016,
+      "val_average_precision": 0.25623197200784414
+    },
+    {
+      "epoch": 3,
+      "loss": 0.33708444237709045,
+      "pr_auc": 0.06867608428001404,
+      "val_loss": 0.3667949140071869,
+      "val_pr_auc": 0.32225942611694336,
+      "val_average_precision": 0.3236781889051859
+    },
+    {
+      "epoch": 4,
+      "loss": 0.31325581669807434,
+      "pr_auc": 0.12136870622634888,
+      "val_loss": 0.3578818738460541,
+      "val_pr_auc": 0.45890966057777405,
+      "val_average_precision": 0.46066466940944256
+    },
+    {
+      "epoch": 5,
+      "loss": 0.2980951964855194,
+      "pr_auc": 0.1601961851119995,
+      "val_loss": 0.3660445213317871,
+      "val_pr_auc": 0.5542986989021301,
+      "val_average_precision": 0.558063360856502
+    },
+    {
+      "epoch": 6,
+      "loss": 0.28867700695991516,
+      "pr_auc": 0.20700965821743011,
+      "val_loss": 0.3586229681968689,
+      "val_pr_auc": 0.588593602180481,
+      "val_average_precision": 0.5920427783688688
+    },
+    {
+      "epoch": 7,
+      "loss": 0.27823421359062195,
+      "pr_auc": 0.2264048010110855,
+      "val_loss": 0.32975465059280396,
+      "val_pr_auc": 0.6257028579711914,
+      "val_average_precision": 0.6269070784952493
+    },
+    {
+      "epoch": 8,
+      "loss": 0.26733583211898804,
+      "pr_auc": 0.2574145793914795,
+      "val_loss": 0.32155290246009827,
+      "val_pr_auc": 0.5895220041275024,
+      "val_average_precision": 0.5957894084469836
+    },
+    {
+      "epoch": 9,
+      "loss": 0.2599707841873169,
+      "pr_auc": 0.23952677845954895,
+      "val_loss": 0.31980377435684204,
+      "val_pr_auc": 0.5364409685134888,
+      "val_average_precision": 0.5470070457872729
+    },
+    {
+      "epoch": 10,
+      "loss": 0.25422653555870056,
+      "pr_auc": 0.2295418083667755,
+      "val_loss": 0.2931312918663025,
+      "val_pr_auc": 0.6524980664253235,
+      "val_average_precision": 0.6536240874848931
+    },
+    {
+      "epoch": 11,
+      "loss": 0.24468736350536346,
+      "pr_auc": 0.2754583954811096,
+      "val_loss": 0.29368826746940613,
+      "val_pr_auc": 0.6579990983009338,
+      "val_average_precision": 0.6592637336742204
+    },
+    {
+      "epoch": 12,
+      "loss": 0.24056105315685272,
+      "pr_auc": 0.2562001347541809,
+      "val_loss": 0.27100539207458496,
+      "val_pr_auc": 0.6802605986595154,
+      "val_average_precision": 0.6807787354677569
+    },
+    {
+      "epoch": 13,
+      "loss": 0.24221932888031006,
+      "pr_auc": 0.29519808292388916,
+      "val_loss": 0.279989093542099,
+      "val_pr_auc": 0.525629460811615,
+      "val_average_precision": 0.541150967068015
+    },
+    {
+      "epoch": 14,
+      "loss": 0.2357809990644455,
+      "pr_auc": 0.23976564407348633,
+      "val_loss": 0.3128286302089691,
+      "val_pr_auc": 0.6622985601425171,
+      "val_average_precision": 0.666003238792318
+    },
+    {
+      "epoch": 15,
+      "loss": 0.2368161976337433,
+      "pr_auc": 0.2757384777069092,
+      "val_loss": 0.23451738059520721,
+      "val_pr_auc": 0.6848635673522949,
+      "val_average_precision": 0.685679764171936
+    },
+    {
+      "epoch": 16,
+      "loss": 0.22775430977344513,
+      "pr_auc": 0.23652517795562744,
+      "val_loss": 0.2541532516479492,
+      "val_pr_auc": 0.6560040712356567,
+      "val_average_precision": 0.6623781011498199
+    },
+    {
+      "epoch": 17,
+      "loss": 0.22108645737171173,
+      "pr_auc": 0.27931636571884155,
+      "val_loss": 0.2606334984302521,
+      "val_pr_auc": 0.6944079399108887,
+      "val_average_precision": 0.6960817609188034
+    },
+    {
+      "epoch": 18,
+      "loss": 0.21993838250637054,
+      "pr_auc": 0.2840542197227478,
+      "val_loss": 0.21197228133678436,
+      "val_pr_auc": 0.7124819755554199,
+      "val_average_precision": 0.7126157759576838
+    },
+    {
+      "epoch": 19,
+      "loss": 0.21448612213134766,
+      "pr_auc": 0.3082602024078369,
+      "val_loss": 0.2226453721523285,
+      "val_pr_auc": 0.6838026642799377,
+      "val_average_precision": 0.6874904429656096
+    },
+    {
+      "epoch": 20,
+      "loss": 0.21375755965709686,
+      "pr_auc": 0.3354376554489136,
+      "val_loss": 0.23537901043891907,
+      "val_pr_auc": 0.7039873003959656,
+      "val_average_precision": 0.7046995412670205
+    }
+  ],
+  "graph_coverage": {
+    "train": {
+      "split": "train",
+      "rows": 601472,
+      "fraud_rows": 493,
+      "transactions_with_edges": 250779,
+      "edge_coverage": 0.41694210204298787,
+      "average_edges_per_transaction": 1.0032637119293213,
+      "maximum_edges_observed": 6
+    },
+    "validation": {
+      "split": "validation",
+      "rows": 244330,
+      "fraud_rows": 1556,
+      "transactions_with_edges": 99545,
+      "edge_coverage": 0.4074202922277248,
+      "average_edges_per_transaction": 0.9863626956939697,
+      "maximum_edges_observed": 7
+    },
+    "test": {
+      "split": "test",
+      "rows": 103573,
+      "fraud_rows": 1600,
+      "transactions_with_edges": 41901,
+      "edge_coverage": 0.4045552412308227,
+      "average_edges_per_transaction": 0.9699342250823975,
+      "maximum_edges_observed": 7
+    }
+  }
+}

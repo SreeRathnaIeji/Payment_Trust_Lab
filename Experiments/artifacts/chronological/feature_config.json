@@ -1,0 +1,39 @@
+{
+    "split_directory": "Dataset (PaySim)/chronological_splits",
+    "numeric_features": [
+        "step",
+        "amount",
+        "oldbalanceOrg",
+        "newbalanceOrig",
+        "oldbalanceDest",
+        "newbalanceDest"
+    ],
+    "ablation_numeric_features": [
+        "step",
+        "amount"
+    ],
+    "categorical_features": [
+        "type"
+    ],
+    "target_column": "isFraud",
+    "excluded_from_inputs": [
+        "isFraud",
+        "isFlaggedFraud",
+        "nameOrig",
+        "nameDest"
+    ],
+    "known_transaction_types": [
+        "CASH_IN",
+        "CASH_OUT",
+        "DEBIT",
+        "PAYMENT",
+        "TRANSFER"
+    ],
+    "chunk_size": 100000,
+    "rows_used_to_fit_scalers": 6014717,
+    "notes": [
+        "Main feature set matches the existing tabular baseline.",
+        "Balance columns are omitted only in the separate no-balance ablation.",
+        "step is retained in both sets; chronological val/test steps are outside the training range."
+    ]
+}

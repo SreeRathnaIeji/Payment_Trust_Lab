@@ -1,0 +1,39 @@
+{
+  "experiment": "no_balance",
+  "features": [
+    "step",
+    "amount",
+    "type"
+  ],
+  "excluded_inputs": [
+    "isFraud",
+    "isFlaggedFraud",
+    "nameOrig",
+    "nameDest"
+  ],
+  "training_sample_fraction": 0.1,
+  "validation_selected_threshold": 0.999,
+  "validation_metrics": {
+    "threshold": 0.999,
+    "precision": 0.2411467116357504,
+    "recall": 0.18380462724935734,
+    "f1": 0.20860685630926332,
+    "average_precision": 0.16800276224823876,
+    "TN": 241874,
+    "FP": 900,
+    "FN": 1270,
+    "TP": 286
+  },
+  "test_metrics": {
+    "threshold": 0.999,
+    "precision": 0.5283018867924528,
+    "recall": 0.21,
+    "f1": 0.3005366726296959,
+    "average_precision": 0.25894210532285483,
+    "TN": 101673,
+    "FP": 300,
+    "FN": 1264,
+    "TP": 336
+  },
+  "model_file": "Experiments\\artifacts\\chronological\\xgboost\\xgboost_no_balance.joblib"
+}

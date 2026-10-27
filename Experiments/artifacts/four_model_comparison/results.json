@@ -1,0 +1,212 @@
+{
+  "config": {
+    "dataset": "PaySim synthetic transaction simulator",
+    "split_directory": "Dataset (PaySim)\\chronological_splits",
+    "split_step_ranges": {
+      "train": [
+        1,
+        450
+      ],
+      "validation": [
+        451,
+        600
+      ],
+      "test": [
+        601,
+        743
+      ]
+    },
+    "numeric_features": [
+      "step",
+      "amount",
+      "oldbalanceOrg",
+      "newbalanceOrig",
+      "oldbalanceDest",
+      "newbalanceDest"
+    ],
+    "categorical_features": [
+      "type"
+    ],
+    "target_column": "isFraud",
+    "excluded_inputs": [
+      "isFraud",
+      "isFlaggedFraud",
+      "nameOrig",
+      "nameDest"
+    ],
+    "training_sample_fraction": 0.1,
+    "training_sample_rows": 601472,
+    "training_sample_fraud_rows": 495,
+    "validation_selected_thresholds": {
+      "Random Forest": 0.31621871622160674,
+      "XGBoost": 0.932887852191925,
+      "Logistic Regression": 0.9319974173158869,
+      "Isolation Forest": 0.6262640447262892
+    },
+    "threshold_selection": "maximize validation F1, then precision, then threshold",
+    "preprocessing_fit_scope": "sampled training rows only",
+    "resampling": "none; imbalance handled with model class weights / positive weight",
+    "isolation_forest_fit_scope": "non-fraud sampled training rows only",
+    "ensemble_rule": "fraud with at least 3 of 4 binary fraud votes; 2-2 tie resolves as legitimate",
+    "random_seed": 42,
+    "chunk_size": 100000,
+    "estimators": 300
+  },
+  "test_details": {
+    "rows": 103573,
+    "fraud_rows": 1600,
+    "ensemble_tie_rows": 206
+  },
+  "test_metrics": {
+    "Random Forest": {
+      "precision": 0.9820031298904538,
+      "recall": 0.784375,
+      "f1": 0.872133425990271,
+      "average_precision": 0.9270062948716751,
+      "confusion_matrix": [
+        [
+          101950,
+          23
+        ],
+        [
+          345,
+          1255
+        ]
+      ],
+      "threshold": 0.31621871622160674
+    },
+    "XGBoost": {
+      "precision": 0.9708083832335329,
+      "recall": 0.810625,
+      "f1": 0.8835149863760219,
+      "average_precision": 0.9620522496174623,
+      "confusion_matrix": [
+        [
+          101934,
+          39
+        ],
+        [
+          303,
+          1297
+        ]
+      ],
+      "threshold": 0.932887852191925
+    },
+    "Logistic Regression": {
+      "precision": 0.917098445595855,
+      "recall": 0.66375,
+      "f1": 0.7701232777374909,
+      "average_precision": 0.859559168894626,
+      "confusion_matrix": [
+        [
+          101877,
+          96
+        ],
+        [
+          538,
+          1062
+        ]
+      ],
+      "threshold": 0.9319974173158869
+    },
+    "Isolation Forest": {
+      "precision": 0.16005873715124816,
+      "recall": 0.204375,
+      "f1": 0.17952237167169915,
+      "average_precision": 0.1126740477453237,
+      "confusion_matrix": [
+        [
+          100257,
+          1716
+        ],
+        [
+          1273,
+          327
+        ]
+      ],
+      "threshold": 0.6262640447262892
+    },
+    "Strict Majority Ensemble": {
+      "precision": 0.9953574744661096,
+      "recall": 0.67,
+      "f1": 0.8008965259618975,
+      "average_precision": 0.8000048578219737,
+      "confusion_matrix": [
+        [
+          101968,
+          5
+        ],
+        [
+          528,
+          1072
+        ]
+      ]
+    }
+  },
+  "validation_metrics_at_selected_thresholds": {
+    "Random Forest": {
+      "precision": 0.962470680218921,
+      "recall": 0.7911311053984575,
+      "f1": 0.8684303350970018,
+      "average_precision": 0.9033771459427896,
+      "confusion_matrix": [
+        [
+          242726,
+          48
+        ],
+        [
+          325,
+          1231
+        ]
+      ]
+    },
+    "XGBoost": {
+      "precision": 0.9551569506726457,
+      "recall": 0.8213367609254498,
+      "f1": 0.8832066344160332,
+      "average_precision": 0.9418692947826968,
+      "confusion_matrix": [
+        [
+          242714,
+          60
+        ],
+        [
+          278,
+          1278
+        ]
+      ]
+    },
+    "Logistic Regression": {
+      "precision": 0.837138508371385,
+      "recall": 0.7069408740359897,
+      "f1": 0.7665505226480838,
+      "average_precision": 0.8256769518377751,
+      "confusion_matrix": [
+        [
+          242560,
+          214
+        ],
+        [
+          456,
+          1100
+        ]
+      ]
+    },
+    "Isolation Forest": {
+      "precision": 0.05508735868448099,
+      "recall": 0.17223650385604114,
+      "f1": 0.08347609406634482,
+      "average_precision": 0.031491039784657435,
+      "confusion_matrix": [
+        [
+          238177,
+          4597
+        ],
+        [
+          1288,
+          268
+        ]
+      ]
+    }
+  }
+}
